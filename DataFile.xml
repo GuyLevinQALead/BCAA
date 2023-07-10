@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--A Data file to hold all of our variables that are unlikely to change-->
+<Enviornment>
+    <!--Web Details-->
+    <Url>https://bcaa--fslasperii.sandbox.lightning.force.com/</Url>
+    <Username>guy.levin@asperii.com.fslasperii</Username>
+    <Password>zzZAQXSW321!!!!!</Password>
+
+    <!--Call Taker Details-->
+    <CTusername>ron.ct@asperii.com</CTusername>
+    <CTpassword>zzZAQXSW321!!!!!</CTpassword>
+
+    <!--Usable Variables/Accounts/Specific Data-->
+    <Account_Abagael>Abagael Carlin</Account_Abagael> <!--No specific config-->
+    <Account_Kevin>Kevin Fowler1</Account_Kevin> <!--config : caseAllows = 0-->
+    <Account_Vari>Vari Mah</Account_Vari> <!--config : caseAllows > 0 Membership priority-->
+    <User_Optimization>Vari Mah</User_Optimization> <!--config : caseAllows > 0 Membership priority-->
+
+    <regularCase>00178421</regularCase>
+    <premiumCase></premiumCase>
+    <premierCase>00178427</premierCase>
+
+    <!--REST API Details-->
+    <RestUserName>guy.levin@asperii.com.fslasperii</RestUserName>
+    <RestPassword>zzZAQXSW321!!!!!NEjTB9d89sfKh2EHMyj2GddW</RestPassword>
+    <ClientID>3MVG9gtjsZa8aaSUjTe6EwHJ_KEE.bv76P9vs0sTgpi6nGVhnNgqBmRKsTvEIiXwsNDE2uGxuKtbCRdhzOT58</ClientID>
+    <ClientSecret>FECEB0B8A55B083B29B984B63A5E2B2893CECD011605BAAC43F4A6BA9AB95695</ClientSecret>
+
+    <RestUrl>https://test.salesforce.com/</RestUrl>
+    <GrantService>/services/oauth2/token?grant_type=password</GrantService>
+    <Rest_EndPoint>/services/data</Rest_EndPoint>
+    <API_Version>/v56.0</API_Version>
+
+    <!--Report Email Credentials-->
+    <EmailReportUser>ronas32@gmail.com</EmailReportUser>
+    <EmailReportPassword>gpeouvvthzjjcpsk</EmailReportPassword>
+
+    <csvPath>./TestCsv.csv</csvPath>
+<!--    <csvPath>C:\Users\guy.levin\IdeaProjects\BCAA\TestCsv.csv</csvPath>-->
+
+    <Platform>Web</Platform> <!-- change this into "Web" for web Platform or "Mobile" for mobile platform-->
+    <Chrome>Chrome</Chrome> <!--Select "Chrome"-->
+
+</Enviornment>
