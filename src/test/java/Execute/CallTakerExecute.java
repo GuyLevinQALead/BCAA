@@ -1,4 +1,5 @@
 package Execute;
+
 import Extensions.UIActions;
 import Extensions.Verifications;
 import Pages.CasePage;
@@ -579,7 +580,12 @@ public class CallTakerExecute extends Operations {
         UIActions.SetDelayAfterAction(1000);
         UIActions.Click(casePage.input_Select);
         UIActions.ScrollTopOfPage(1, 1000);
-        Verifications.VerifyElementPresent(casePage.address_TowDestination);
+        try {
+            Verifications.VerifyElementPresent(casePage.address_TowDestination);
+        }
+        catch (Exception e){
+            Assert.assertFalse(true);
+        }
         UIActions.ScrollTopOfPage(1, 1000);
     }
 
@@ -1529,7 +1535,6 @@ public class CallTakerExecute extends Operations {
 
         for (String s : trailerType) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//button[@aria-label='Trailer Type, --None--']//following::span[@title='" + s + "']")));
-            ;
         }
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + trailerType[1] + "']")));
         textFieldsPopulated.add(trailerType[1]);
@@ -1537,7 +1542,6 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.dropdown_TrailerLength);
         for (String s : trailerLength) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='" + s + "']")));
-            ;
         }
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + trailerLength[1] + "']")));
         textFieldsPopulated.add(trailerLength[1]);
@@ -1546,7 +1550,6 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.dropdown_TrailerPlugType);
         for (String s : trailerPlugType) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='" + s + "']")));
-            ;
         }
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + trailerPlugType[1] + "']")));
         textFieldsPopulated.add(trailerPlugType[1]);
@@ -1555,7 +1558,6 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.dropdown_TrailerHitchType);
         for (String s : trailerHitchType) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='" + s + "']")));
-            ;
         }
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + trailerHitchType[1] + "']")));
         textFieldsPopulated.add(trailerHitchType[1]);
@@ -1754,7 +1756,13 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_LastNameCAAOrAAA,lastName);
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(7000);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='LINDSEY HAYDEN']")));
+        try {
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='LINDSEY HAYDEN']")));
+        }
+        catch (Exception e){
+//            fail();
+            Assert.assertFalse(true);
+        }
         UIActions.Click(casePage.btn_PreviousBtnCAAOrAAA);
 
 
@@ -1784,7 +1792,12 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_PhoneNumberCAAOrAAA,phoneNumber);
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(3000);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='JONATHAN JAMES']")));
+        try {
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='JONATHAN JAMES']")));
+        }
+        catch (Exception e){
+            Assert.assertFalse(true);
+        }
         UIActions.Click(casePage.btn_PreviousBtnCAAOrAAA);
 
 
@@ -1886,6 +1899,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
+        UIActions.SetDelayAfterAction(1000);
         UIActions.Click(casePage.btn_account_next);
         casePage.SelectAccountByName(casePage.search_AccountTab_Account, accountnotallowed);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
@@ -2025,7 +2039,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2074,7 +2088,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
 
@@ -2122,7 +2136,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped")
@@ -2211,7 +2225,7 @@ public class CallTakerExecute extends Operations {
 //        WebFlows.RefreshPage();
 
         //Verify If expected result was populated on the facility Code, facility and facility address
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='Service is not available - please update Case Pacesetter Code']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='Service is not available - please update Case Pacesetter Code']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2260,7 +2274,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2309,7 +2323,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2358,7 +2372,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2407,7 +2421,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2456,7 +2470,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
     @Ignore("Skipped because requirement needs manual configuration before running the test ")
@@ -2504,7 +2518,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Code']//following::lightning-formatted-text[1]")).getText(),faciltyCode);
         Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Facility Address']//following::lightning-formatted-text[1]")).getText(),faciltyAddress);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));;
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='"+facilty+"']")));
 
     }
 
