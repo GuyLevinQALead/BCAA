@@ -1,6 +1,5 @@
 package Execute;
 
-import Extensions.RestActions;
 import Extensions.UIActions;
 import Extensions.Verifications;
 import Utilities.Operations;
@@ -13,17 +12,17 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 @Listeners(Utilities.Listeners.class)
-public class FieldServiceSettingsExcecute extends Operations {
+public class FieldServiceSettingsExecute extends Operations {
 
     @BeforeClass
     public void BeforeExecution() {
-        isApiTest = true;
+        isApiTest = false;
         isAdminExecute = true;
         currentUrl = readData.GetData("Url");
 //        if (isApiTest) {
 //            RestActions.InitiateAPIConnectionGuy();
 //        }
-        RestActions.InitiateAPIConnectionGuy();
+//        RestActions.InitiateAPIConnectionGuy();
         initBrowser("Chrome");
         WebFlows.Login(readData.GetData("Username"), readData.GetData("Password"));
         WebFlows.CloseOpenedTab();
