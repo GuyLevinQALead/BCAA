@@ -19,10 +19,6 @@ public class FieldServiceSettingsExecute extends Operations {
         isApiTest = false;
         isAdminExecute = true;
         currentUrl = readData.GetData("Url");
-//        if (isApiTest) {
-//            RestActions.InitiateAPIConnectionGuy();
-//        }
-//        RestActions.InitiateAPIConnectionGuy();
         initBrowser("Chrome");
         WebFlows.Login(readData.GetData("Username"), readData.GetData("Password"));
         WebFlows.CloseOpenedTab();

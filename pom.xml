@@ -162,7 +162,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>2.12.4</version>
                         <configuration>
-                            <testFailureIgnore>true</testFailureIgnore>
+<!--                            <testFailureIgnore>true</testFailureIgnore>-->
                             <suiteXmlFiles>
                                 <suiteXmlFile>C:\Users\guy.levin\IdeaProjects\BCAA\CallTakerExecute.xml</suiteXmlFile>
                             </suiteXmlFiles>
@@ -189,7 +189,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>2.12.4</version>
                         <configuration>
-                            <testFailureIgnore>true</testFailureIgnore>
+<!--                            <testFailureIgnore>true</testFailureIgnore>-->
                             <suiteXmlFiles>
                                 <suiteXmlFile>C:\Users\guy.levin\IdeaProjects\BCAA\AdminExecute.xml</suiteXmlFile>
                             </suiteXmlFiles>
@@ -216,7 +216,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>2.12.4</version>
                         <configuration>
-                            <testFailureIgnore>true</testFailureIgnore>
+<!--                            <testFailureIgnore>true</testFailureIgnore>-->
                             <suiteXmlFiles>
                                 <suiteXmlFile>C:\Users\guy.levin\IdeaProjects\BCAA\TestEmail.xml</suiteXmlFile>
                             </suiteXmlFiles>

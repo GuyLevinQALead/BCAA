@@ -518,7 +518,9 @@ public class CallTakerExecute extends Operations {
     //Validate that you can search an account using his name, phone, number and email
     public void ValidateSearchAccountByEmailPhoneNameEmailNumber() {
         String[] tableHeader = {"Account Name", "Membership Number", "Household Phone", "Mailing Address", "Email"};
-        String[] account = {"Abagael Carlin", "911000", "2368111711", "acarlinet@about.com", "1440 Sunderland Avenue Silver Spring, MD 20906 US"};
+        String[] account = {"Abagael Carlin", "911000", "2368111711", "acarlinet@about.com","4567 canada Avenue Silver Spring California 20906 United States"
+//                "1440 Sunderland Avenue Silver Spring, MD 20906 US"
+        };
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
