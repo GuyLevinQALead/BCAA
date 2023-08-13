@@ -110,13 +110,19 @@ public class Verifications extends Operations {
     }
 
     public static void VerifyListOfElements(List<WebElement> list){
-        try{
-            for (WebElement elem : list){
-              Assert.assertTrue(elem.isDisplayed());
+        if (list.size()>0) {
+            try {
+                for (WebElement elem : list) {
+                    Assert.assertTrue(elem.isDisplayed());
+                }
+                currentTest.pass("Verified all elements in list " + list + " are displayed");
+            } catch (Exception e) {
+                currentTest.fail("Could not read list" + " " + e);
             }
-            currentTest.pass("Verified all elements in list " + list +" are displayed");
-        } catch (Exception e){
-            currentTest.fail("Could not read list"+ " " + e);
+        }
+        else {
+            currentTest.fail("List has no elements");
+
         }
     }
 

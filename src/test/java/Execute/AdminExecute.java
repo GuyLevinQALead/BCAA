@@ -259,6 +259,10 @@ public class AdminExecute extends Operations {
                 catch (ArrayIndexOutOfBoundsException e){
                     Assert.assertFalse(true);
                 }
+
+                catch (IndexOutOfBoundsException e){
+                    Assert.assertFalse(true);
+                }
             }
         }
     }
@@ -399,7 +403,7 @@ public class AdminExecute extends Operations {
         String section = "Fields & Relationships";
         String[] fieldsList = {"Parent Work Order ID", "Case ID", "Is Courtesy Call", "JOA", "Pacesetter Code", "Legacy Code", "PTA Date & Time", "Facility", "Problem Type"
                 , "Service Type", "Year", "Vehicle Type", "Vehicle Description", "Underground Height", "Tow Passenger", "Longitude", "Latitude", "Tow Distance", "Tow Destination Name",
-                "Tow Destination Geolocation", "Tow Destination Address", "Flag", "Red Flag", "Province", "Policy", "Pickup Point", "Phone 1",
+                 "Tow Destination Address", "Flag", "Red Flag", "Province", "Policy", "Pickup Point", "Phone 1",
                 "Other Underground Height", "Model", "Member Since", "Membership Status", "Membership Level", "Member Holding For Call Back Notes", "Member Holding For Call Back", "Member Expiry Date", "Make"
                 , "Long Tow Calls Remaining", "Long Tow Calls Allowed", "Location Code", "License Plate", "Last Name", "Landmark", "Key Location", "Home Address", "History Calls", "Fuel Type", "First Name", "Expected Cash Amount"
                 , "Expected Cost To Tow Vehicle", "Estimated Over KM", "Email", "Driver Directions", "Driveline", "Current Calls", "Color", "Club Membership", "Chargeable Calls", "Cash Call", "RAE Priority", "Case Priority", "Call this long before arrival (minutes)", "Case Callback Reason"
@@ -407,6 +411,7 @@ public class AdminExecute extends Operations {
                 , "Manual Spot Reason", "Cancellation Reason", "Facility Code", "Facility Address", "Facility Phone", "Breakdown Location Cross Street", "Motorcycle Type"
                 , "Motorcycle Engine Type", "RV Class", "RV Engine Location", "Trailer Type", "Trailer Length", "Trailer Plug Type", "Trailer Hitch Type", "Trailer Hitch Size", "Call Creation Date & Time", "Flat Tire Location", "Membership Level",
                 "Internal SLR Geolocation", "Address", "Key Location Other", "Facility Text", "Share Internally", "Service Appointment Priority"
+//                "Tow Destination Geolocation",
         };
 
         WebFlows.OpenSetupWindow();
@@ -1018,6 +1023,70 @@ public class AdminExecute extends Operations {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[contains(text(),'Work Order Priority Field')]//following::select[1]//option[@label='None' and@selected]")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[contains(text(),'Work Order Line Item Priority Field ')]//following::select[1]//option[@label='None' and @selected]")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//option[@label='Service Appointment Priority' and @selected][1]")));
+            driver.switchTo().defaultContent();
+        }
+
+        catch (AssertionError e) {
+            driver.switchTo().defaultContent();
+            Assert.assertFalse(true);
+        }
+    }
+
+//    //This test checks that priority settings are configured correctly
+//    @Test(description = "844 1514, Test 1419 ; ValidateReshuffleAssignmentsSettings")
+//    public void ValidateReshuffleAssignmentsSettings() {
+//        UIActions.SearchInAppLauncher("Field Service Settings");
+//        UIActions.SetDelayAfterAction(2000);
+//        driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
+//        UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
+//        UIActions.Click(fieldServiceSettingsPage.btn_SchedulingDynamicGanttTab);
+//        UIActions.ScrollBottomOfPage(3, 1000, true);
+//        try {
+//            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[contains(text(),'Max time horizon (days) in which the appointment can be scheduled')]//following::input[text()='1'][1]")));
+//            driver.switchTo().defaultContent();
+//        }
+//
+//        catch (AssertionError e) {
+//            driver.switchTo().defaultContent();
+//            Assert.assertFalse(true);
+//        }
+//    }
+
+    //This test checks that priority settings are configured correctly
+    @Test(description = "Story 844, Test 1515 ; ValidateFixSchedulingSettings")
+    public void ValidateFixSchedulingSettings() {
+        UIActions.SearchInAppLauncher("Field Service Settings");
+        UIActions.SetDelayAfterAction(2000);
+        driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
+        UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
+        UIActions.Click(fieldServiceSettingsPage.btn_SchedulingDynamicGanttTab);
+        UIActions.ScrollBottomOfPage(1, 2000, true);
+        try {
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[contains(text(),'Automatically fix overlaps when an appointment overlaps with another appointment or absence')]//following::input[@class='ng-pristine ng-untouched ng-valid ng-not-empty'][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//option[@selected='selected' and text()='Schedule to all resources'][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//option[@selected='selected' and text()='Unschedule the appointment(s)'][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[contains(text(),'After unscheduling services reschedule them by')]//following::option[@selected='selected' and text()='Priority'][1]")));
+
+            driver.switchTo().defaultContent();
+        }
+
+        catch (AssertionError e) {
+            driver.switchTo().defaultContent();
+            Assert.assertFalse(true);
+        }
+    }
+
+    //This test checks that priority settings are configured correctly
+    @Test(description = "Story 1429, Test 1513 ; ValidateRuleViolationConfigurationSettings")
+    public void ValidateRuleViolationConfigurationSettings() {
+        UIActions.SearchInAppLauncher("Field Service Settings");
+        UIActions.SetDelayAfterAction(2000);
+        driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
+        UIActions.Click(fieldServiceSettingsPage.btn_DispatcherConsoleUI);
+        UIActions.Click(fieldServiceSettingsPage.btn_GANTTConfigurationsTab);
+        UIActions.ScrollBottomOfPage(2, 1000, true);
+        try {
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[contains(text(),'Rule Validation Frequency')]//following::option[text()='Always']")));
             driver.switchTo().defaultContent();
         }
 

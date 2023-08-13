@@ -447,10 +447,6 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//option[text()='S (Sponsor)']")
     public WebElement txt_Xperigo_PaymentResponsibilityCodeSponsor;
 
-
-
-
-
     @FindBy(xpath = "//label[text()='Phone']//following::input[1]")
     public WebElement txt_Xperigo_Phone;
 
@@ -460,22 +456,14 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//legend[text()='Home Address']//following::input[1]")
     public WebElement txt_Xperigo_HomeAddress;
 
-
-
-
-
-
-
-
-
-
-
-
     @FindBy(xpath = "//input[@placeholder='Search Accounts...']")
     public WebElement search_MemberTab_account;
 
     @FindBy(xpath = "//input[@placeholder='Search Accounts...']")
     public WebElement search_AccountTab_Account;
+
+    @FindBy(xpath = "//input[@placeholder='Search undefined...']")
+    public WebElement search_AccountTab_AccountTemp;
 
     @FindBy(xpath = "//span[contains(text(), 'Show All Results')]")
     public WebElement link_showAllResults;
@@ -699,8 +687,8 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//select[@name='search_form_year']")
     public WebElement dropdown_searchCarFromYear;
 
-//    @FindBy(xpath = "//input[@placeholder='Search Makes...']")
-//    public WebElement search_searchCarMakes;
+    @FindBy(xpath = "//input[@placeholder='Search Makes...']")
+    public WebElement search_searchCarMakes;
 
     @FindBy(xpath = "//input[@placeholder='Search Models...']")
     public WebElement search_searchCarModels;

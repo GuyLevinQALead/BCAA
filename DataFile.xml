@@ -32,8 +32,8 @@
     <API_Version>/v56.0</API_Version>
 
     <!--Report Email Credentials-->
-    <EmailReportUser>ronas32@gmail.com</EmailReportUser>
-    <EmailReportPassword>gpeouvvthzjjcpsk</EmailReportPassword>
+    <EmailReportUser></EmailReportUser>
+    <EmailReportPassword></EmailReportPassword>
 
     <csvPath>./TestCsv.csv</csvPath>
 <!--    <csvPath>C:\Users\guy.levin\IdeaProjects\BCAA\TestCsv.csv</csvPath>-->

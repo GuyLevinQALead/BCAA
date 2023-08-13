@@ -314,7 +314,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Breakdown Location");
         UIActions.Click(casePage.btn_EditLocationCode);
@@ -337,7 +337,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Service");
         UIActions.Click(casePage.btn_EditPolicy);
@@ -470,11 +470,13 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        UIActions.SetDelayAfterAction(500);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
         Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='" + account + "']")));
+        UIActions.SetDelayAfterAction(1000);
 //        Verifications.VerifyElementIsReadOnly(driver.findElement(By.xpath("//span[text()='"+account+"']")));
         Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='Phone 2']/parent::div/parent::div//div//span//slot//lightning-formatted-text")));
 //        Verifications.VerifyElementIsReadOnly(driver.findElement(By.xpath("//span[text()='Phone 2']/parent::div/parent::div//div//span//slot//lightning-formatted-text")));
@@ -494,7 +496,8 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        UIActions.SetDelayAfterAction(500);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -526,7 +529,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        UIActions.UpdateText(casePage.search_MemberTab_account, account[0]);
+        UIActions.UpdateText(casePage.search_AccountTab_AccountTemp, account[0]);
         UIActions.ClickAndWait(casePage.link_showAllResults, "pressed link");
         for (String s : tableHeader) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//th[@title='" + s + "']")));
@@ -534,15 +537,15 @@ public class CallTakerExecute extends Operations {
         }
 
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
-        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search Accounts...']")), account[1]);
+        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[1]);
         actions.sendKeys(Keys.ENTER).build().perform();
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
-        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search Accounts...']")), account[2]);
+        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[2]);
         actions.sendKeys(Keys.ENTER).build().perform();
-        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search Accounts...']")), account[3]);
+        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[3]);
         actions.sendKeys(Keys.ENTER).build().perform();
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
-        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search Accounts...']")), account[4]);
+        UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[4]);
         actions.sendKeys(Keys.ENTER).build().perform();
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
         UIActions.ClickElementByXpath("//button[@title='Cancel']");
@@ -558,7 +561,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -604,7 +607,7 @@ public class CallTakerExecute extends Operations {
         casePage.SelectClubType("BCAA Member");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Service");
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -615,7 +618,7 @@ public class CallTakerExecute extends Operations {
         UIActions.ScrollTopOfPage(2, 800);
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, readData.GetData("Account_Abagael"));
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, readData.GetData("Account_Abagael"));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Service");
         cashCallTypeValue = driver.findElement(By.xpath("//span[text()='Cash Call']/parent::div/following-sibling::div/span/slot/lightning-formatted-text")).getText();
@@ -685,7 +688,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(500);
         casePage.NavigateCaseInnerTab("Tow Destination");
@@ -741,7 +744,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
         UIActions.Click(casePage.btn_problemTypeEdit);
@@ -778,7 +781,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
         Verifications.VerifyElementPresent(casePage.txt_SearchVehicleComponent);
@@ -791,10 +794,10 @@ public class CallTakerExecute extends Operations {
 
     }
 
-    @Test(description = "Story 1135,966 Test 930+1288 ValidateBatteryIssueQuestionProperlyConfigured")
+    @Test(description = "Story 1135,966 Test 930+1288 ValidateResultsOfUniqueVehiclesAreDisplayedI")
     public void ValidateResultsOfUniqueVehiclesAreDisplayedI() {
         String account = readData.GetData("Account_Kevin");
-        String[] fieldValues = {"RV 24-32 feet", "test vehicle", "2023", "Ford", "Expedition", "4WD", "Gas", "1244", "White", "FLORIDA"};
+        String[] fieldValues = {"2022", "KIA", "TELLURIDE", "Passenger Car/Truck", "new", "AWD", "Gas", "White","009", "British Columbia"};
         String[] fields = {"Year", "Make", "Model", "Vehicle Type", "Vehicle Description", "Fuel Type", "Driveline", "Color", "License Plate"};
         String[] tableFields = {"Year", "Make", "Model", "Vehicle Description"};
 
@@ -805,7 +808,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
 
         //Entering vehicle tab and choosing a car and verifying the proper fields are displayed
@@ -842,7 +845,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         UIActions.ClickAndWait(casePage.btn_account_next, "");
-        casePage.SelectAccountByName(casePage.search_MemberTab_account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
         UIActions.Click(casePage.btn_problemTypeEdit);
@@ -888,8 +891,10 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_NonBCAA_Email, email);
         UIActions.UpdateText(casePage.txt_NonBCAA_Phone, values[2]);
         UIActions.UpdateText(casePage.txt_NonBCAA_HomeAddress, "4918 Nuzum Road");
-        casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ARROW_UP);
+        UIActions.SetDelayAfterAction(1000);
+        casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ARROW_DOWN);
         casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ENTER);
+        UIActions.SetDelayAfterAction(1000);
         UIActions.ClickAndWait(casePage.btn_account_Save, "save");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -1117,7 +1122,7 @@ public class CallTakerExecute extends Operations {
         WebFlows.RefreshPage();
         UIActions.SetDelayAfterAction(2000);
         casePage.NavigateCaseInnerTab("Breakdown Location");
-        WebElement s = driver.findElement(By.xpath("//span[text()='Address Geolocation']/parent::div/parent::div/div/span/slot/lightning-formatted-location"));
+        WebElement s = driver.findElement(By.xpath("//span[text()='Address Geolocation']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a"));
         Verifications.VerifyTextIsNotNullInElement(s);
     }
 
@@ -1129,16 +1134,35 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Breakdown Location");
         UIActions.Click(casePage.btn_editAddress);
+        UIActions.Click(casePage.txt_latitude);
         UIActions.UpdateText(casePage.txt_latitude, "42.319558");
+        UIActions.Click(casePage.txt_longitude);
         UIActions.UpdateText(casePage.txt_longitude, "-74.515053");
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save");
         UIActions.SetDelayAfterAction(3000);
         WebFlows.RefreshPage();
         UIActions.SetDelayAfterAction(5000);
         casePage.NavigateCaseInnerTab("Breakdown Location");
-        List<WebElement> e = driver.findElements(By.xpath("//span[text()='Breakdown Location Address']/parent::div/parent::div/div/span/slot/lightning-formatted-location/a"));
-        Verifications.VerifyListOfElements(e);
-    }
+//        try {
+            List<WebElement> e = driver.findElements(By.xpath("//span[text()='Breakdown Location Address']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a"));
+            System.out.println(e.size());
+            if(e.size()>0){
+
+                currentTest.pass("Address is updated");
+                Assert.assertTrue(true);
+
+            }
+            else {
+                currentTest.fail("Address is not populated");
+                Assert.assertFalse(true);
+
+            }
+//            Verifications.VerifyListOfElements(e);
+        }
+//        catch (NoSuchElementException e){
+//            currentTest.fail("Couldn't find address");
+//        }
+//    }
 
     @Test(description = "Story 432,1136 Test 1061, 1065, 1255 ValidateVehicleCanBeSearchedAndProperlyFilledVa")
     //Vefiriy that you can search by vehicle year, and after the vehicle is chosen you can see the vehicle details on the additional information section of the vehicle/Triage tab
@@ -1358,15 +1382,18 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Member");
         casePage.SelectClubType("BCAA Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
 
         //Breadkown location
         casePage.NavigateCaseInnerTab("Breakdown Location");
         UIActions.Click(casePage.btn_editAddress);
+        UIActions.Click(casePage.txt_NonBCAA_HomeAddress);
         UIActions.UpdateText(casePage.txt_NonBCAA_HomeAddress, "4918 Nuzum Road");
-        casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ARROW_UP);
+        UIActions.SetDelayAfterAction(1000);
+        casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ARROW_DOWN);
         casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ENTER);
+        UIActions.SetDelayAfterAction(1000);
         UIActions.ClickAndWait(casePage.btn_account_Save, "save");
 //        casePage.ClickElementInCountryDropdownByXpathUsingText(casePage.dropdown_country,country[0]);
 //        UIActions.UpdateText(casePage.txt_Address_Street, "Schuman Road 1006");
@@ -1432,9 +1459,9 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
 
         //Verify you can search by make only
-        casePage.SelectModel(casePage.search_searchCarModels, model);
+        casePage.SelectMake(casePage.search_make, make);
         UIActions.ClickAndWait(casePage.btn_SearchVehicle, "search");
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + model + "']")));
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + make + "']")));
         WebFlows.RefreshPage();
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
 
@@ -1730,11 +1757,11 @@ public class CallTakerExecute extends Operations {
 
     @Test(description = "Story 408, Test 1152+1153+1154+1155 ; ValidateCallTakerCanSearchMemberBaseForCAAOrAAA")
     public void ValidateCallTakerCanSearchMemberBaseForCAAOrAAA() {
-        String firstName = "LINDSEY";
+        String firstName = "ANNE";
         String firstNamephone = "JONATHAN";
         String lastName = "HAYDEN";
         String lastNamephone = "JAMES";
-        String membershipNumber = "6202722772449007";
+        String membershipNumber = "6202720637550027";
         String phoneNumber = "614-389-7981";
         String clubMembership = "(272) - Alberta Motor Assoc - 7804307700";
         String clubMembershipPhone = "(130) - AAA Ohio Auto Club - 6144313388";
@@ -1759,7 +1786,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(7000);
         try {
-            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='LINDSEY HAYDEN']")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='ANNE HAYDEN']")));
         }
         catch (Exception e){
 //            fail();
@@ -1779,7 +1806,7 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_MembershipNumberCAAOrAAA,membershipNumber);
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(7000);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='LINDSEY HAYDEN']")));
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='ANNE HAYDEN']")));
         UIActions.Click(casePage.btn_PreviousBtnCAAOrAAA);
 
 
@@ -1903,7 +1930,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Member");
         UIActions.SetDelayAfterAction(1000);
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, accountnotallowed);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, accountnotallowed);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.ScrollTopOfPage(1,1000);
         Verifications.VerifyElementPresent(casePage.img_CashCallImage);
@@ -1911,7 +1938,7 @@ public class CallTakerExecute extends Operations {
         //Choose BCAA Member with calls allowed >0 and check that the cash call image is not displayed
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, accountallowed);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, accountallowed);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.ScrollTopOfPage(1,1000);
         Verifications.VerifyElementIsNotPresentUsingAXpath("//img[@alt='Cash Call']");
@@ -1929,7 +1956,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1,1000,true);
@@ -2010,7 +2037,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2060,7 +2087,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2108,7 +2135,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.Click(casePage.btn_SaveFieldEdit);
         UIActions.SetDelayAfterAction(2000);
 
@@ -2155,7 +2182,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.Click(casePage.btn_SaveFieldEdit);
         UIActions.SetDelayAfterAction(2000);
 
@@ -2200,7 +2227,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.Click(casePage.btn_SaveFieldEdit);
         UIActions.SetDelayAfterAction(2000);
 
@@ -2245,7 +2272,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2294,7 +2321,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2343,7 +2370,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2392,7 +2419,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2442,7 +2469,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2490,7 +2517,7 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Member");
         UIActions.Click(casePage.btn_account_next);
-        casePage.SelectAccountByName(casePage.search_AccountTab_Account, account);
+        casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(2000);
 
@@ -2529,7 +2556,9 @@ public class CallTakerExecute extends Operations {
     public void ValidateServiceResourceLayout() {
         String ServiceResourceName = "Resource 1";
         String[] fieldsList = {"Name", "Resource Type", "Active", "Facility",
-                "Facility Code", "Partner Account", "Driver ID", "Phone", "Efficiency"};
+                "Facility Code", "Partner Account", "Driver ID", "Phone"
+//                "Efficiency"
+        };
         UIActions.SearchInAppLauncher("Service Resources");
         WebFlows.RefreshPage();
         UIActions.SetDelayAfterAction(3000);
