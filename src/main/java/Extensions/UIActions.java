@@ -237,9 +237,11 @@ public class UIActions extends Operations {
     }
     @Step
     public static void SearchInAppLauncher(String value){
-        wait.until(ExpectedConditions.elementToBeClickable(mainPage.btn_appLauncher));
+//        wait.until(ExpectedConditions.elementToBeClickable(mainPage.btn_appLauncher));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='slds-icon-waffle']")));
         Click(mainPage.btn_appLauncher);
         UpdateText(mainPage.txt_appLauncherTextbox, value);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='"+value+"']/div/lightning-formatted-rich-text/span/p")));
         Click(driver.findElement(By.xpath("//a[@data-label='"+value+"']/div/lightning-formatted-rich-text/span/p")));
         SetDelayAfterAction(2000);
     }

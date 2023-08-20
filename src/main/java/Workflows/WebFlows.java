@@ -42,7 +42,9 @@ public class WebFlows extends Operations {
     }
 
     public static void OpenSetupWindow(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-icon[@class='slds-icon-utility-setup slds-button__icon slds-global-header__icon forceIcon slds-icon_container']")));
         UIActions.Click(mainPage.btn_Setup);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("related_setup_app_home")));
         UIActions.Click(mainPage.btn_SetupOption);
         currentTest.info("Open Setup Window");
         ChangeToSetupTab();
@@ -59,6 +61,7 @@ public class WebFlows extends Operations {
             UIActions.Click(driver.findElement(By.xpath("//a[text() = '"+objectName+"']")));
         }
     }    public static void SearchInObjectManagerAndEnterACertainSectionInSetup(String objectName, String section){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@class='title slds-truncate']")));
         UIActions.ClickElementInListByXpath("//span[@class='title slds-truncate']", 1);
         wait.until(ExpectedConditions.visibilityOf(setupPage.search_ObjectQuickFind));
         UIActions.UpdateText(setupPage.search_ObjectQuickFind, objectName);
@@ -148,6 +151,7 @@ public class WebFlows extends Operations {
     }
 
     public static void CheckForMultipleElement(String element){
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath(element))));
         List<WebElement> elements = driver.findElements(By.xpath(element));
         if (elements.size() >= 2){
             if (element == "//div[@data-aura-class='forceListViewPicker']"){
@@ -161,6 +165,7 @@ public class WebFlows extends Operations {
     }
 
     public static void OpenViewAllListview(){
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-aura-class='forceListViewPicker']")));
         CheckForMultipleElement("//div[@data-aura-class='forceListViewPicker']");
         UIActions.ScrollBottomOfPage(1, 800, false);
         UIActions.ClickAndWait(mainPage.list_ViewAllInListview, "View All List View");

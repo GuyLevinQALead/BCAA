@@ -10,8 +10,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +47,8 @@ public class AdminExecute extends Operations {
         String optimizationUser = "Field Service Optimization";
         WebFlows.OpenSetupWindow();
         WebFlows.SearchInSetup(optimizationUser);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='User: " + optimizationUser + " ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='User: " + optimizationUser + " ~ Salesforce - Unlimited Edition']")));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//h2[text()=' Field Service Optimization']")));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='" + optimizationUser + "']")));
@@ -60,7 +66,10 @@ public class AdminExecute extends Operations {
         WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + field + "']")));
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -78,8 +87,11 @@ public class AdminExecute extends Operations {
         WebFlows.OpenSetupWindow();
         WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='globalQuickfind']")));
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + field + "']")));
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -97,7 +109,9 @@ public class AdminExecute extends Operations {
         WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + field + "']")));
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -121,14 +135,17 @@ public class AdminExecute extends Operations {
         try {
             for (String s : fieldsList) {
                 UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
                 Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
                 UIActions.SetDelayAfterAction(500);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + fieldsType[i] + "']")));
                 Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + fieldsType[i] + "']")));
                 i++;
             }
         }
         catch (Exception e){
-            System.out.println("Some elements were not fount "+ e);
+            e.printStackTrace();
+            currentTest.fail("Couldn't find an element");
             Assert.assertFalse(true);
 
         }
@@ -149,6 +166,8 @@ public class AdminExecute extends Operations {
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
         UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -173,6 +192,8 @@ public class AdminExecute extends Operations {
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
         UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//th[text()='" + s + "']")));
@@ -193,6 +214,7 @@ public class AdminExecute extends Operations {
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
         UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -242,6 +264,8 @@ public class AdminExecute extends Operations {
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            UIActions.SetDelayAfterAction(500);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
             UIActions.SetDelayAfterAction(500);
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + fieldsType[i] + "']")));
@@ -299,8 +323,10 @@ public class AdminExecute extends Operations {
             WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(s, section);
             UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + field + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + field + "']")));
             UIActions.SetDelayAfterAction(500);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + field + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + fieldType + "']")));
             UIActions.ClickElementInListByXpath("//span[@class='title slds-truncate']", 1);
         }
@@ -325,6 +351,7 @@ public class AdminExecute extends Operations {
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
             UIActions.SetDelayAfterAction(500);
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + fieldsType[i] + "']")));
@@ -334,7 +361,10 @@ public class AdminExecute extends Operations {
         //Test the facility type picklist values
         UIActions.Click(driver.findElement(By.xpath("//a[text() = '" + section + "']")));
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, fieldsList[0]);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + fieldsList[0] + "']")));
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldsList[0] + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: " + fieldsList[0] + " ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + fieldsList[0] + " ~ Salesforce - Unlimited Edition']")));
         for (String s : facilityType) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -368,9 +398,9 @@ public class AdminExecute extends Operations {
         String object = "Case";
         String section = "Fields & Relationships";
         String[] fieldsList = {"CDX Authorization Level", "CDX Authorization Message", "CDX Authorization Code", "CDX Motorcycle Coverage", "CDX Long Tow Coverage",
-         "Triage Answer","Legacy Code","Member Since","Chargeable Calls","History Calls","Member Expiry Date","Phone 1","Phone 1 Opt-In", "Phone 1 Primary","Phone 1 Type",
-           "Phone 2","Phone 2 Opt-In","Phone 2 Primary","Phone 2 Type"
-//                "Membership Expiry Date"
+         "Triage Answer","Legacy Code","Member Since","Chargeable Calls","History Calls","Phone 1","Phone 1 Opt-In", "Phone 1 Primary","Phone 1 Type",
+           "Phone 2","Phone 2 Opt-In","Phone 2 Primary","Phone 2 Type",
+                "Membership Expiry Date"
         };
         WebFlows.OpenSetupWindow();
         UIActions.SetDelayAfterAction(2000);
@@ -392,6 +422,7 @@ public class AdminExecute extends Operations {
         WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
         }
 
@@ -408,6 +439,8 @@ public class AdminExecute extends Operations {
         WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
+
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
         }
 
@@ -435,7 +468,9 @@ public class AdminExecute extends Operations {
         WebFlows.OpenSetupWindow();
         WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
         for (String s : fieldsList) {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='globalQuickfind']")));
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
         }
 
@@ -449,6 +484,8 @@ public class AdminExecute extends Operations {
         WebFlows.OpenSetupWindow();
         WebFlows.SearchInSetupQuickFind(setupPage);
         UIActions.Click(driver.findElement(By.xpath("//mark[text()='" + setupPage + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Installed Packages ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='Installed Packages ~ Salesforce - Unlimited Edition']")));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Salesforce Field Service App Package']")));
     }
@@ -506,16 +543,20 @@ public class AdminExecute extends Operations {
         WebFlows.OpenSetupWindow();
         WebFlows.SearchInSetupQuickFind(setupPage);
         UIActions.Click(driver.findElement(By.xpath("//mark[text()='" + setupPage + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='User Profiles ~ Salesforce - Unlimited Edition']")));
         driver.switchTo().frame((driver.findElement(By.xpath("//iframe[@title='User Profiles ~ Salesforce - Unlimited Edition']"))));
         UIActions.Click(driver.findElement(By.xpath("//a[text()='" + specificProfileName + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']")));
         driver.switchTo().frame((driver.findElement(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']"))));
         UIActions.ScrollBottomOfPage(1, 1000, true);
         actions.moveToElement(driver.findElement(By.xpath("//a[contains(text(),'Object Settings')]"))).build().perform();
         actions.doubleClick().build().perform();
         UIActions.SetDelayAfterAction(4000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']")));
         driver.switchTo().frame((driver.findElement(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']"))));
         ((JavascriptExecutor) driver).executeScript("return arguments[0].scrollIntoView(true)", driver.findElement(By.xpath("//a[text()='" + settingName + "'][1]")));
         UIActions.Click(driver.findElement(By.xpath("//a[text()='" + settingName + "'][1]")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']")));
         driver.switchTo().frame((driver.findElement(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']"))));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//td[text()='ERS Vehicle']//following::input[@checked][1]")));
         driver.switchTo().defaultContent();
@@ -594,7 +635,7 @@ public class AdminExecute extends Operations {
         for (String s : products) {
             UIActions.UpdateText(driver.findElement(By.xpath("//input[@aria-label='Search All Products list view.']")), s);
             driver.findElement(By.xpath("//input[@aria-label='Search All Products list view.']")).sendKeys(Keys.ENTER);
-
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[@title='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + productFamily + "']")));
         }
@@ -676,6 +717,7 @@ public class AdminExecute extends Operations {
         UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
         UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : priorityValues) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -687,6 +729,7 @@ public class AdminExecute extends Operations {
     public void VerifyWOChangesToStatusCancelledIfTheChildSAIsCancelled() throws InterruptedException {
         String status = "Cancelled";
         workOrderPage.CreateNewWorkOrder();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Work Order']//following::span[@class='uiOutputText'][1]")));
         String workOrderNumber = driver.findElement(By.xpath("//div[text()='Work Order']//following::span[@class='uiOutputText'][1]")).getText();
         WebFlows.CloseOpenedTab();
         serviceAppointmentPage.CreateServiceAppointmentFromWorkOrder(workOrderNumber, "Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
@@ -700,6 +743,7 @@ public class AdminExecute extends Operations {
         UIActions.Click(driver.findElement(By.xpath("//a[text()='" + workOrderNumber + "']")));
         WebFlows.RefreshPage();
         try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Status']//following::span[text()='" + status + "'][1]")));
             Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Status']//following::span[text()='" + status + "'][1]")).getText(), status);
         }
         catch (AssertionError e){
@@ -717,6 +761,7 @@ public class AdminExecute extends Operations {
         Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
         WebFlows.RefreshPage();
         UIActions.Click(serviceAppointmentPage.btn_editStatus);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search Facilities...']")));
         UIActions.UpdateText(driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")), facility);
         driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")).sendKeys(Keys.ARROW_DOWN);
         driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")).sendKeys(Keys.ENTER);
@@ -824,6 +869,8 @@ public class AdminExecute extends Operations {
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "'][1]")));
 //        List<WebElement> elems = driver.findElements(By.xpath("//span[text()='" + field + "']"));
 //        UIActions.Click(elems.get(elems.size() - 1));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : statusList) {
             try {
@@ -869,8 +916,10 @@ public class AdminExecute extends Operations {
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
             UIActions.SetDelayAfterAction(500);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + fieldsType[i] + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + fieldsType[i] + "']")));
             i++;
         }
@@ -891,8 +940,10 @@ public class AdminExecute extends Operations {
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
             UIActions.SetDelayAfterAction(500);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + fieldsType[i] + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + fieldsType[i] + "']")));
             i++;
         }
@@ -912,10 +963,14 @@ public class AdminExecute extends Operations {
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
+
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
             UIActions.SetDelayAfterAction(500);
         }
         UIActions.Click(driver.findElement(By.xpath("//span[text()='Service Territory Type']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: Service Territory Type ~ Salesforce - Unlimited Edition']")));
+
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: Service Territory Type ~ Salesforce - Unlimited Edition']")));
 
         try {
@@ -942,10 +997,12 @@ public class AdminExecute extends Operations {
         UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
         for (String s : fieldsList) {
             UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, s);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + s + "']")));
             UIActions.SetDelayAfterAction(500);
         }
         UIActions.Click(driver.findElement(By.xpath("//span[text()='Service Type']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: Service Type ~ Salesforce - Unlimited Edition']")));
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: Service Type ~ Salesforce - Unlimited Edition']")));
         for (String s : serviceTypeValues) {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
@@ -968,8 +1025,10 @@ public class AdminExecute extends Operations {
             UIActions.UpdateText(setupPage.search_ObjectQuickFind, s);
             List<WebElement> elems = driver.findElements(By.xpath("//a[text() = '"+s+"']"));
             if (elems.size() >= 2){
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='"+s+"']")));
                 Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='"+s+"']")));
             } else{
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='"+s+"']")));
                 Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='"+s+"']")));
             }
         }
@@ -993,6 +1052,7 @@ public class AdminExecute extends Operations {
             UIActions.Click(casePage.search_casesList);
             UIActions.UpdateText(casePage.search_casesList,s);
             casePage.search_casesList.sendKeys(Keys.ENTER);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[text()='" + s + "']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='" + s + "']")));
         }
 
@@ -1044,7 +1104,8 @@ public class AdminExecute extends Operations {
         WebFlows.RefreshPage();
         WebFlows.OpenViewAllListview();
         UIActions.SetDelayAfterAction(3000);
-            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='Map Polygons']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Map Polygons']")));
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='Map Polygons']")));
     }
 
     //This test checks that priority settings are configured correctly
@@ -1120,6 +1181,7 @@ public class AdminExecute extends Operations {
     public void ValidateFillInScheduleSettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
         UIActions.SetDelayAfterAction(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Field Service Settings']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingDynamicGanttTab);
