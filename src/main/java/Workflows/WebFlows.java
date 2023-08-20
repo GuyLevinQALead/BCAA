@@ -7,6 +7,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class WebFlows extends Operations {
         }
     }    public static void SearchInObjectManagerAndEnterACertainSectionInSetup(String objectName, String section){
         UIActions.ClickElementInListByXpath("//span[@class='title slds-truncate']", 1);
+        wait.until(ExpectedConditions.visibilityOf(setupPage.search_ObjectQuickFind));
         UIActions.UpdateText(setupPage.search_ObjectQuickFind, objectName);
         UIActions.SetDelayAfterAction(2000);
         List<WebElement> elems = driver.findElements(By.xpath("//a[text() = '"+objectName+"']"));

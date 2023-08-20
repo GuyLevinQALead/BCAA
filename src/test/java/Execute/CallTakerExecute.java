@@ -9,6 +9,7 @@ import Workflows.WebFlows;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.*;
@@ -267,7 +268,7 @@ public class CallTakerExecute extends Operations {
     }
 
 
-    @Test(description = "Story 1076, Test 1122 ; ValidateCaseOriginCorrectValues")
+    @Test(description = "Story 1076, Test 1122, 1123; ValidateCaseOriginCorrectValues")
     //Verify that the picklist of case origin has the required values and that its mandatory
     public void ValidateCaseOriginCorrectValues() {
         List<WebElement> caseOrigin = new ArrayList<>();
@@ -288,14 +289,14 @@ public class CallTakerExecute extends Operations {
                 break;
             }
         }
-//        casePage.SaveNewCase();
-//        UIActions.SetDelayAfterAction(1000);
-//        UIActions.Click(casePage.btn_EditCaseOrigin);
-//        UIActions.Click(driver.findElement(By.xpath("//button[@aria-label='Case Origin, Call Centre']")));
-//        UIActions.Click(driver.findElement(By.xpath("//label[text()='Case Origin']//following::span[text()='--None--'][1]")));
-//        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//div[text()='Complete this field.']")));
-//        casePage.SaveNewCase();
-//        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//h2[text()='We hit a snag.']")));
+        casePage.SaveNewCase();
+        UIActions.SetDelayAfterAction(1000);
+        UIActions.Click(casePage.btn_EditCaseOrigin);
+        UIActions.Click(driver.findElement(By.xpath("//button[@aria-label='Case Origin, Call Centre']")));
+        UIActions.Click(driver.findElement(By.xpath("//label[text()='Case Origin']//following::span[text()='--None--'][1]")));
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//div[text()='Complete this field.']")));
+        casePage.SaveNewCase();
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//h2[text()='We hit a snag.']")));
     }
 
 
@@ -488,7 +489,7 @@ public class CallTakerExecute extends Operations {
     public void ValidateAccountPopulatesAllCorrectFieldsForBCAAMember() {
         String account = readData.GetData("Account_Kevin");
 //      Vefiry that if a certain account has values in  the fields mentioned on the test, the fields are populated on the case after the account is chosen in the case
-        String[] fields = {"Membership Number", "Membership Level", "Membership Status", "Member Since", "Member Expiry Date"};
+        String[] fields = {"Membership Number", "Membership Level", "Membership Status", "Member Since", "Membership Expiry Date"};
         String[] NumericFields = {"Calls Allowed", "Calls Remaining", "Calls Used", "Current Calls", "Chargeable Calls", "History Calls", "Long Tow Calls Allowed", "Long Tow Calls Remaining"};
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
@@ -501,18 +502,24 @@ public class CallTakerExecute extends Operations {
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
-        for (int i = 0; i < fields.length; i++) {
-            Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='" + fields[i] + "']/parent::div/following-sibling::div/descendant::lightning-formatted-text")));
+        try {
+            for (int i = 0; i < fields.length; i++) {
+                Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='" + fields[i] + "']/parent::div/following-sibling::div/descendant::lightning-formatted-text")));
 //            Verifications.VerifyElementIsReadOnly(driver.findElement(By.xpath("//span[text()='" + fields[i] + "']//following::span[1]")));
 
-        }
-        for (int i = 0; i < NumericFields.length; i++) {
-            Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='" + NumericFields[i] + "']/parent::div/following-sibling::div/descendant::lightning-formatted-number")));
+            }
+            for (int i = 0; i < NumericFields.length; i++) {
+                Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='" + NumericFields[i] + "']/parent::div/following-sibling::div/descendant::lightning-formatted-number")));
 //            Verifications.VerifyElementIsReadOnly(driver.findElement(By.xpath("//span[text()='" +  NumericFields[i] + "']//following::span[1]")));
 
-        }
+            }
 //        Verifications.VerifyElementIsReadOnly(driver.findElement(By.xpath("//span[text()='" +  NumericFields[i] + "']//following::span[1]")));
-
+        }
+        catch (NoSuchElementException e){
+            e.printStackTrace();
+            currentTest.fail("Not all fields were populated");
+            Assert.assertFalse(true);
+        }
 
     }
 
@@ -797,7 +804,8 @@ public class CallTakerExecute extends Operations {
     @Test(description = "Story 1135,966 Test 930+1288 ValidateResultsOfUniqueVehiclesAreDisplayedI")
     public void ValidateResultsOfUniqueVehiclesAreDisplayedI() {
         String account = readData.GetData("Account_Kevin");
-        String[] fieldValues = {"2022", "KIA", "TELLURIDE", "Passenger Car/Truck", "new", "AWD", "Gas", "White","009", "British Columbia"};
+//        String[] fieldValues = {"2022", "KIA", "TELLURIDE", "Passenger Car/Truck", "new", "AWD", "Gas", "White","009", "British Columbia"};
+        String[] fieldValues = {"2017", "CHEVROLET", "Silverado", "Passenger Car/Truck", " ", "4WD", "Gas", "Red","908ty", "Alberta"};
         String[] fields = {"Year", "Make", "Model", "Vehicle Type", "Vehicle Description", "Fuel Type", "Driveline", "Color", "License Plate"};
         String[] tableFields = {"Year", "Make", "Model", "Vehicle Description"};
 
@@ -822,11 +830,19 @@ public class CallTakerExecute extends Operations {
 
         //Verifying if the vehicle details are updated after the vehicle is chosen
         UIActions.ScrollBottomOfPage(1, 1000, true);
-        for (String s : fields) {
-            Verifications.VerifyElementIsPresentUsingXpath("//span[text()='" + s + "']");
+        try {
+            for (String s : fields) {
+                Verifications.VerifyElementIsPresentUsingXpath("//span[text()='" + s + "']");
+            }
+            for (String s : fieldValues) {
+                System.out.println(s);
+                Verifications.VerifyElementIsPresentUsingXpath("//lightning-formatted-text[text()='" + s + "']");
+            }
         }
-        for (String s : fieldValues) {
-            Verifications.VerifyElementIsPresentUsingXpath("//lightning-formatted-text[text()='" + s + "']");
+        catch (Exception e){
+            e.printStackTrace();
+            currentTest.fail("Not all fields are displayed");
+            Assert.assertFalse(true);
         }
 
 

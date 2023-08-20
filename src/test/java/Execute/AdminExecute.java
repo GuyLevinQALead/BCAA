@@ -86,6 +86,24 @@ public class AdminExecute extends Operations {
         }
     }
 
+    //This test validates that the SA in the system have the In Jeopardy Reason according to the config book (on setup)
+    @Test(description = "Story 1475, Test 1525 ; ValidateInJeopardyReasonHasCorrectStatus")
+    public void ValidateInJeopardyReasonHasCorrectStatus() {
+        String object = "Service Appointment";
+        String section = "Fields & Relationships";
+        String field = "In Jeopardy Reason";
+        String[] statusList = {"PTA In Jeopardy", "Late En Route", "Late On Location", "Late Service Completion", "Late Tow Loading", "Late Under Tow", "Late Tow At Drop", "Late Assigned", "Late Dispatched"};
+        WebFlows.OpenSetupWindow();
+        WebFlows.SearchInObjectManagerAndEnterACertainSectionInSetup(object, section);
+        UIActions.Click(setupPage.search_setupQuickFindInsideObjectSection);
+        UIActions.UpdateText(setupPage.search_setupQuickFindInsideObjectSection, field);
+        UIActions.Click(driver.findElement(By.xpath("//span[text()='" + field + "']")));
+        WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
+        for (String s : statusList) {
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
+        }
+    }
+
     //This test validates that the Location object in the system have the correct fields according to the config book (on setup)
     @Test(description = "Story 1302, Test 1425 ; ValidateLocationObjectHasCorrectFields")
     public void ValidateLocationObjectHasCorrectFields() {
@@ -410,8 +428,8 @@ public class AdminExecute extends Operations {
                 , "Call Type", "Calls Remaining", "Calls Allowed", "Callback", "Callback Type", "Call Taker Comments", "Phone 2", "Phone 1 Type", "Phone 2 Type", "Phone 1 Opt-In", "Phone 2 Opt-In", "Phone 1 Primary", "Phone 2 Primary", "Preferred Name", "Manually Spotted"
                 , "Manual Spot Reason", "Cancellation Reason", "Facility Code", "Facility Address", "Facility Phone", "Breakdown Location Cross Street", "Motorcycle Type"
                 , "Motorcycle Engine Type", "RV Class", "RV Engine Location", "Trailer Type", "Trailer Length", "Trailer Plug Type", "Trailer Hitch Type", "Trailer Hitch Size", "Call Creation Date & Time", "Flat Tire Location", "Membership Level",
-                "Internal SLR Geolocation", "Address", "Key Location Other", "Facility Text", "Share Internally", "Service Appointment Priority"
-//                "Tow Destination Geolocation",
+                "Internal SLR Geolocation", "Address", "Key Location Other", "Facility Text", "Share Internally", "Service Appointment Priority",
+                "Tow Destination Geolocation"
         };
 
         WebFlows.OpenSetupWindow();
@@ -1032,6 +1050,8 @@ public class AdminExecute extends Operations {
         }
     }
 
+
+
 //    //This test checks that priority settings are configured correctly
 //    @Test(description = "844 1514, Test 1419 ; ValidateReshuffleAssignmentsSettings")
 //    public void ValidateReshuffleAssignmentsSettings() {
@@ -1052,7 +1072,7 @@ public class AdminExecute extends Operations {
 //        }
 //    }
 
-    //This test checks that priority settings are configured correctly
+    //This test checks that fix scheduling settings are configured correctly
     @Test(description = "Story 844, Test 1515 ; ValidateFixSchedulingSettings")
     public void ValidateFixSchedulingSettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
@@ -1076,7 +1096,34 @@ public class AdminExecute extends Operations {
         }
     }
 
-    //This test checks that priority settings are configured correctly
+    //This test checks that fill in schedule settings are configured correctly
+    @Test(description = "Story 842, Test 1523 ; ValidateFillInScheduleSettings")
+    public void ValidateFillInScheduleSettings() {
+        UIActions.SearchInAppLauncher("Field Service Settings");
+        UIActions.SetDelayAfterAction(2000);
+        driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
+        UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
+        UIActions.Click(fieldServiceSettingsPage.btn_SchedulingDynamicGanttTab);
+        UIActions.ScrollBottomOfPage(1, 2000, true);
+        try {
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//p[contains(text(),'Fill-in schedule')]//following::label[contains(text(),'Service Appointment candidate Boolean field ')][1]//following::option[@label='Is Fill In Candidate' and @selected='selected'][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//p[contains(text(),'Fill-in schedule')]//following::label[contains(text(),'Work Order candidate Boolean field')][1]//following::option[@label='Is Fill In Candidate' and @selected='selected'][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//p[contains(text(),'Fill-in schedule')]//following::label[contains(text(),'Work Order Line Item candidate Boolean field')][1]//following::option[@label='Is Fill In Candidate' and @selected='selected'][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//p[contains(text(),'Fill-in schedule')]//following::label[contains(text(),'Order candidate appointments by')][1]//following::option[@label='Priority' and @selected='selected'][1]")));
+//            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//p[contains(text(),'Fill-in schedule')]//following::label[contains(text(),'Work Order Line Item candidate Boolean field')][1]//following::option[@label='Is Fill In Candidate' and @selected='selected'][1]")));
+//            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//p[contains(text(),'Fill-in schedule')]//following::label[contains(text(),'Work Order Line Item candidate Boolean field')][1]//following::option[@label='Is Fill In Candidate' and @selected='selected'][1]")));
+
+
+            driver.switchTo().defaultContent();
+        }
+
+        catch (AssertionError e) {
+            driver.switchTo().defaultContent();
+            Assert.assertFalse(true);
+        }
+    }
+
+    //This test checks that rule violation configuration settings are configured correctly
     @Test(description = "Story 1429, Test 1513 ; ValidateRuleViolationConfigurationSettings")
     public void ValidateRuleViolationConfigurationSettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
@@ -1109,7 +1156,6 @@ public class AdminExecute extends Operations {
         for (String s : status) {
             try {
                 Verifications.VerifyElementPresent(driver.findElement(By.xpath("//label[@title='" + s + "']//following-sibling::input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']")));
-                driver.switchTo().defaultContent();
             }
             catch (AssertionError e){
                 driver.switchTo().defaultContent();
@@ -1138,15 +1184,18 @@ public class AdminExecute extends Operations {
         for (String s : status) {
             try {
                 Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//label[contains(text(),'" + serviceAppointmentState[i] + "')]//following::select[1]//option[@selected][1]")).getText(), s);
+                System.out.println(s);
                 i++;
-                driver.switchTo().defaultContent();
             }
+
 
             catch (AssertionError e) {
                 driver.switchTo().defaultContent();
                 Assert.assertFalse(true);
             }
             catch (org.openqa.selenium.NoSuchElementException e){
+                System.out.println( );
+                e.printStackTrace();
                 driver.switchTo().defaultContent();
                 Assert.assertFalse(true);
 

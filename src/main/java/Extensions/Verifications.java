@@ -203,18 +203,27 @@ public class Verifications extends Operations {
 //
 //    }
     public static void VerifyElementIsPresentUsingXpath(String xpath){
-        List<WebElement> elem = driver.findElements(By.xpath(xpath));
-            if (elem.size() > 0){
+        try {
+            List<WebElement> elem = driver.findElements(By.xpath(xpath));
+            if (elem.size() > 0) {
 
                 Assert.assertTrue(true);
                 currentTest.pass("Element is Present" + elem);
 
-            }else{
-                Assert.fail("Element is not Visible"+ elem);
-                currentTest.fail("Element is not Visible"+ elem);
+            } else {
+                Assert.fail("Element is not Visible" + elem);
+                currentTest.fail("Element is not Visible" + elem);
 
 
-            }}
+            }
+        }
+
+    catch (Exception e){
+            e.printStackTrace();
+            currentTest.fail("Element is not visible");
+            Assert.assertFalse(true);
+    }
+    }
 
 
     public static void VerifyElementNotDisplayed(WebElement ele,String eleName) {
