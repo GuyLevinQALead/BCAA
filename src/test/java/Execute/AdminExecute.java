@@ -472,8 +472,27 @@ public class AdminExecute extends Operations {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='" + s + "']")));
         }
         driver.switchTo().defaultContent();
+    }
 
-
+    //In order to execute this test you must run it from an admin profile, since CT doesn't have access to setup
+    //This test validates if the BCAA Road assist case custom setting is configured on the env
+    @Test(description = "Story 1497, Test 1526 ; ValidateTheExistenceOfBCAARoadAssistSASettingsCustomMetadata")
+    public void ValidateTheExistenceOfBCAARoadAssistSASettingsCustomMetadata() {
+        String setupPage = "Custom Metadata Types";
+        String customMetadataName="BCAA Road Assist SA";
+//        String[] customFields={"Basic Long Tow Allotment (KM)","Long Tow Overage Cost/KM","Plus Long Tow Allotment (KM)","Premier Long Tow Allotment (KM)"};
+        WebFlows.OpenSetupWindow();
+        WebFlows.SearchInSetupQuickFind(setupPage);
+        UIActions.Click(driver.findElement(By.xpath("//mark[text()='" + setupPage + "']")));
+        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='All Custom Metadata Types ~ Salesforce - Unlimited Edition']")));
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='"+customMetadataName+" Settings']")));
+//        UIActions.Click(driver.findElement(By.xpath("//a[text()='"+customMetadataName+" Settings']")));
+//        UIActions.SetDelayAfterAction(3000);
+//        driver.switchTo().frame(driver.findElement(By.xpath("//iframe[@title='Custom Metadata Type: "+customMetadataName+" Settings ~ Salesforce - Unlimited Edition']")));
+//        for (String s : customFields) {
+//            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='" + s + "']")));
+//        }
+        driver.switchTo().defaultContent();
     }
 
     //In order to execute this test you must run it from an admin profile, since CT doesn't have access to setup

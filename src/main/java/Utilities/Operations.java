@@ -27,9 +27,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /*
     commonOps class will handle all the instantiate and terminate of a new Test Run
@@ -97,7 +97,8 @@ public class Operations extends Base {
         }
         extent.attachReporter(htmlReporter);
         driver.manage().window().maximize();
-        wait = new WebDriverWait(driver, 15);
+         wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+
         driver.get(currentUrl);
         PageManager.InitiatePages();
         actions = new Actions(driver);
@@ -114,7 +115,7 @@ public class Operations extends Base {
 
         WebDriverManager.chromedriver().setup();
         WebDriver driver = new ChromeDriver(p);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+         wait = new WebDriverWait(driver,Duration.ofSeconds(10));
         return driver;
     }
 
