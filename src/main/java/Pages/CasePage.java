@@ -45,6 +45,9 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//a[@title='Cancelled']")
     public WebElement btn_CaseStatusCancelled;
 
+    @FindBy(xpath = "//a[@title='Closed']")
+    public WebElement btn_CaseStatusClosed;
+
     @FindBy(xpath = "//button[@title='Edit Cancellation Reason']")
     public WebElement btn_CancellationReasonEdit;
 
@@ -80,8 +83,20 @@ public class CasePage extends Operations {
 
     @FindBy(xpath = "//span[text()='Mark as Current Status']")
     public WebElement btn_CaseStatusMarkAsCurrentStatus;
-    @FindBy(xpath = "//span[text()='Mark Status as Complete']")
-    public WebElement btn_CaseStatusMarkStatusAsComplete;
+
+
+    @FindBy(xpath = "//span[text()='Select Closed Status']")
+    public WebElement btn_CaseStatusMarkStatusAsClosed;
+    @FindBy(xpath = "//option[text()='Select a closed stage...']")
+    public WebElement dropdown_SelectAClosedSStage;
+
+    @FindBy(xpath = "//option[text()='Cancelled']")
+    public WebElement dropdown_SelectCancelledStatus;
+
+    @FindBy(xpath = "//option[text()='Complete']")
+    public WebElement dropdown_SelectCompleteStatus;
+
+
 
 
     @FindBy(xpath = "//div[text()='You encountered some errors when trying to save this record']")
@@ -238,6 +253,9 @@ public class CasePage extends Operations {
 
     @FindBy(xpath = "//button[text()='Save']")
     public WebElement btn_SaveFieldEdit;
+
+    @FindBy(xpath = "//button[@title='Save']")
+    public WebElement btn_CaseStatusSave;
 
     @FindBy(xpath = "//label[text()='Pacesetter Code'][1]//following::div[1]")
     public WebElement dropdown_PacesetterCodePicklist;
@@ -812,6 +830,7 @@ public class CasePage extends Operations {
     public void SelectAccountByName(WebElement dropdown, String accountName){
         try {
             UIActions.UpdateText(dropdown, accountName);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-combobox-formatted-text[@title='" + accountName + "']")));
             UIActions.ClickAndWait(driver.findElement(By.xpath("//lightning-base-combobox-formatted-text[@title='" + accountName + "']")), "click on account");
         }
 
@@ -822,6 +841,7 @@ public class CasePage extends Operations {
 
     public void SelectMake(WebElement dropdown, String make){
         UIActions.UpdateText(dropdown, make);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-combobox-formatted-text[@title='"+make+"']")));
         UIActions.ClickAndWait(driver.findElement(By.xpath("//lightning-base-combobox-formatted-text[@title='"+make+"']")), "selected make model");
     }
 
@@ -837,10 +857,12 @@ public class CasePage extends Operations {
         try {
             UIActions.SetDelayAfterAction(1000);
             List<WebElement> tab = driver.findElements(By.xpath("//a[@data-label='"+tabName+"']"));
-            wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//a[@data-label='"+tabName+"']"))));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='"+tabName+"']")));
+//            wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//a[@data-label='"+tabName+"']"))));
             if (tab.size() > 0){
                 UIActions.Click(tab.get(tab.size()-1));
             } else {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@title='More Tabs']")));
                 List<WebElement> moreTab = driver.findElements(By.xpath("//button[@title='More Tabs']"));
                 if (moreTab.size() > 0) {
                     UIActions.Click(moreTab.get(moreTab.size() - 1));

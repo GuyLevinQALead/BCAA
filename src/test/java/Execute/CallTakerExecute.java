@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
@@ -86,6 +87,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_rideAlongEdit);
         UIActions.UpdateText(casePage.txt_rideAlongText, rideAlongText);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "edit save");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-formatted-text[text()='" + rideAlongText + "']")));
         Verifications.VerifyElementIsPresentUsingXpath("//lightning-formatted-text[text()='" + rideAlongText + "']");
     }
 
@@ -441,10 +443,12 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(CasePage.casePage.btn_editPencilButton);
         UIActions.Click(casePage.checkbox_MemberHoldingForCallBack);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Please populate Member Holding for Call Back Notes']")));
         Verifications.VerifyElementPresentByText("div", "Please populate Member Holding for Call Back Notes");
         UIActions.Click(casePage.txt_MemberHoldingForCallBackNotes);
         UIActions.UpdateText(casePage.txt_MemberHoldingForCallBackNotes, MemberHoldingForCallBackNotes);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-formatted-text[text()='" + MemberHoldingForCallBackNotes + "']")));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-formatted-text[text()='" + MemberHoldingForCallBackNotes + "']")));
     }
 
@@ -463,7 +467,7 @@ public class CallTakerExecute extends Operations {
 
     @Test(description = "Story 767, Test 569+932+938 (phone) ; ValidateAccountAddedAndFieldsPopulatedForCase")
     //Checking that once you choose an account for a case, its mobile phone and address are populated on the case
-    public void ValidateAccountAddedAndFieldsPopulatedForCase() {
+    public void  ValidateAccountAddedAndFieldsPopulatedForCase() {
         String account = "Abagael Carlin";
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
@@ -473,6 +477,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_account_next);
         UIActions.SetDelayAfterAction(500);
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
+        UIActions.SetDelayAfterAction(500);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -504,6 +509,7 @@ public class CallTakerExecute extends Operations {
         UIActions.ScrollBottomOfPage(1, 1000, true);
         try {
             for (int i = 0; i < fields.length; i++) {
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + fields[i] + "']/parent::div/following-sibling::div/descendant::lightning-formatted-text")));
                 Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='" + fields[i] + "']/parent::div/following-sibling::div/descendant::lightning-formatted-text")));
 //            Verifications.VerifyElementIsReadOnly(driver.findElement(By.xpath("//span[text()='" + fields[i] + "']//following::span[1]")));
 
@@ -542,18 +548,21 @@ public class CallTakerExecute extends Operations {
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//th[@title='" + s + "']")));
 
         }
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td//a[@title='Abagael Carlin']")));
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
         UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[1]);
         actions.sendKeys(Keys.ENTER).build().perform();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td//a[@title='Abagael Carlin']")));
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
         UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[2]);
         actions.sendKeys(Keys.ENTER).build().perform();
         UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[3]);
         actions.sendKeys(Keys.ENTER).build().perform();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td//a[@title='Abagael Carlin']")));
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
         UIActions.UpdateText(driver.findElement(By.xpath("//div[@class='autocompleteWrapper slds-grow']//input[@placeholder='Search undefined...']")), account[4]);
         actions.sendKeys(Keys.ENTER).build().perform();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td//a[@title='Abagael Carlin']")));
         Verifications.VerifyElementIsPresentUsingXpath("//td//a[@title='Abagael Carlin']");
         UIActions.ClickElementByXpath("//button[@title='Cancel']");
     }
@@ -572,6 +581,7 @@ public class CallTakerExecute extends Operations {
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Member");
         UIActions.ScrollBottomOfPage(1, 1000, true);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Home Address']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a")));
         address = driver.findElement(By.xpath("//span[text()='Home Address']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a")).getAttribute("aria-label");
         String NewAddress = address.replace("\n", " ");
         System.out.println(NewAddress);
@@ -618,6 +628,7 @@ public class CallTakerExecute extends Operations {
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Service");
         UIActions.ScrollBottomOfPage(1, 1000, true);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Cash Call']/parent::div/following-sibling::div/span/slot/lightning-formatted-text")));
         String cashCallTypeValue = driver.findElement(By.xpath("//span[text()='Cash Call']/parent::div/following-sibling::div/span/slot/lightning-formatted-text")).getText();
         Verifications.VerifyElementTextIsEqualToExpectedText(cashCallTypeValue, cashCallExpected);
 
@@ -702,8 +713,10 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_TowDistanceEdit);
         //Step 1
         UIActions.UpdateText(casePage.txt_TowDistanceText, "160");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Save']")));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Estimated Over KM']/parent::div/following-sibling::div/span/slot/records-formula-output/slot/lightning-formatted-number")));
         Verifications.VerifyElementTextIsEqualToExpectedText(casePage.EstimateOverKM(), "0.00");
         Verifications.VerifyElementTextIsEqualToExpectedText(casePage.ExpectedCostToTowVehicle(), "$0.00");
 
@@ -756,8 +769,8 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
         UIActions.Click(casePage.btn_problemTypeEdit);
         casePage.SelectProblemType(casePage.dropdown_problemType, problemType);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Save']")));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save after edit");
-
         casePage.SelectMake(casePage.search_make, make);
         UIActions.ClickAndWait(casePage.btn_SearchVehicle, "search");
         List<WebElement> vehicles = driver.findElements(By.xpath("//strong[text()='Please Select one of the Vehicles']/ancestor::flowruntime-base-section/descendant::table/tbody/tr/td/lightning-primitive-cell-checkbox/span"));
@@ -767,6 +780,7 @@ public class CallTakerExecute extends Operations {
         UIActions.ClickAndWait(casePage.btn_FinishCarSelection, "Finish");
 
         for (String s : QAs) {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
             Verifications.VerifyElementIsPresentUsingXpath("//span[text()='" + s + "']");
         }
         UIActions.SetDelayAfterAction(500);
@@ -791,7 +805,9 @@ public class CallTakerExecute extends Operations {
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//strong[text()='Search Vehicle']")));
         Verifications.VerifyElementPresent(casePage.txt_SearchVehicleComponent);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//strong[text()='Vehicles found in previous cases:']")));
         Verifications.VerifyElementPresent(casePage.txt_PreviousVehiclesComponent);
         Verifications.VerifyElementPresent(casePage.txt_VehicleInformationSection);
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -815,6 +831,7 @@ public class CallTakerExecute extends Operations {
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Next']")));
         UIActions.Click(casePage.btn_account_next);
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
@@ -824,6 +841,7 @@ public class CallTakerExecute extends Operations {
 //        for(String s : tableFields){
 //            Verifications.VerifyElementIsPresentUsingXpath("//strong[text()='Vehicles found in previous cases:']//following::span[text()='"+s+"'][1]");
 //        }
+
         UIActions.Click(casePage.radbtn_VehicleFromPreviousCases);
         UIActions.ClickAndWait(casePage.btn_confirmVehicleSelectionAndSave, "Save After Vehicle Selection");
 
@@ -836,6 +854,7 @@ public class CallTakerExecute extends Operations {
             }
             for (String s : fieldValues) {
                 System.out.println(s);
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-formatted-text[text()='" + s + "']")));
                 Verifications.VerifyElementIsPresentUsingXpath("//lightning-formatted-text[text()='" + s + "']");
             }
         }
@@ -866,6 +885,7 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
         UIActions.Click(casePage.btn_problemTypeEdit);
         casePage.SelectProblemType(casePage.dropdown_problemType, problemType);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Save']")));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save after edit");
 
         casePage.SelectMake(casePage.search_make, makeModel);
@@ -878,6 +898,8 @@ public class CallTakerExecute extends Operations {
 
 
         for (String s : QAs) {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='" + s + "']")));
+
             Verifications.VerifyElementIsPresentUsingXpath("//span[text()='" + s + "']");
         }
         UIActions.ScrollBottomOfPage(1, 1000, true);
@@ -995,6 +1017,7 @@ public class CallTakerExecute extends Operations {
 //        WebFlows.RefreshPage();
 
         //Verification that the acutal fields were populated
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Club Membership']//following::lightning-formatted-text[1]")));
 
         Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='Club Membership']//following::lightning-formatted-text[1]")));
         Verifications.VerifyTextIsNotNullInElement(driver.findElement(By.xpath("//span[text()='Xperigo Call Number']//following::lightning-formatted-text[1]")));
@@ -1116,6 +1139,7 @@ public class CallTakerExecute extends Operations {
         UIActions.SetDelayAfterAction(3000);
         WebFlows.RefreshPage();
         UIActions.SetDelayAfterAction(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Breakdown Location']")));
         casePage.NavigateCaseInnerTab("Breakdown Location");
         WebElement s = driver.findElement(By.xpath("//span[text()='Address Geolocation']/parent::div/parent::div/div/span/slot/lightning-formatted-location"));
         Verifications.VerifyTextIsNotNullInElement(s);
@@ -1137,6 +1161,7 @@ public class CallTakerExecute extends Operations {
         UIActions.SetDelayAfterAction(3000);
         WebFlows.RefreshPage();
         UIActions.SetDelayAfterAction(2000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Breakdown Location']")));
         casePage.NavigateCaseInnerTab("Breakdown Location");
         WebElement s = driver.findElement(By.xpath("//span[text()='Address Geolocation']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a"));
         Verifications.VerifyTextIsNotNullInElement(s);
@@ -1213,6 +1238,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_SaveVehicleSelection);
         UIActions.ClickAndWait(casePage.btn_FinishCarSelection, "Finish");
         WebFlows.RefreshPage();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Vehicle \\ Triage']")));
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
         UIActions.ScrollBottomOfPage(1, 1000, true);
         Verifications.VerifyElementIsPresentUsingXpath("//lightning-formatted-text[text()='" + year + "']");
@@ -1236,15 +1262,20 @@ public class CallTakerExecute extends Operations {
 
     @Test(description = "Story 990, Test 1112 ; ValidateCallTakerSeeCorrectCaseStatus")
     public void ValidateCallTakerSeeCorrectCaseStatus() {
-        String[] caseStatus = {"Open", "Submitted", "Complete", "Cancelled"};
+        String[] caseStatus = {"Open", "Submitted"};
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
         for (String s : caseStatus) {
-
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@title='" + s + "']")));
             Verifications.VerifyElementIsPresentUsingXpath("//a[@title='" + s + "']");
         }
+        UIActions.Click(casePage.btn_CaseStatusClosed);
+        UIActions.Click(casePage.btn_CaseStatusMarkStatusAsClosed);
+        UIActions.Click(casePage.dropdown_SelectAClosedSStage);
+        Verifications.VerifyElementPresent(casePage.dropdown_SelectCancelledStatus);
+        Verifications.VerifyElementPresent(casePage.dropdown_SelectCompleteStatus);
     }
 
     @Test(description = "Story 988, Test 1228 ; ValidateCallTakerSeeCorrectFieldsOnCompactLayout")
@@ -1273,8 +1304,14 @@ public class CallTakerExecute extends Operations {
         casePage.SaveNewCase();
 
         //Verify an error is presented when trying to cancel without providing cancellation Reason
-        UIActions.Click(casePage.btn_CaseStatusCancelled);
-        UIActions.Click(casePage.btn_CaseStatusMarkAsCurrentStatus);
+        UIActions.Click(casePage.btn_CaseStatusClosed);
+        UIActions.Click(casePage.btn_CaseStatusMarkStatusAsClosed);
+        UIActions.Click(casePage.dropdown_SelectAClosedSStage);
+        UIActions.Click(casePage.dropdown_SelectCancelledStatus);
+        UIActions.Click(casePage.btn_CaseStatusSave);
+
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='You encountered some errors when trying to save this record']")));
         Verifications.VerifyElementPresent(CasePage.casePage.warning_SubmittedValidationRuleError);
 
         //Verify that case can be cancelled if cancellation reason is filled
@@ -1287,8 +1324,12 @@ public class CallTakerExecute extends Operations {
         UIActions.ScrollTopOfPage(1, 1000);
         casePage.SaveNewCase();
 //        UIActions.SetDelayAfterAction(1000);
-        UIActions.Click(casePage.btn_CaseStatusCancelled);
-        UIActions.Click(casePage.btn_CaseStatusMarkAsCurrentStatus);
+        UIActions.Click(casePage.btn_CaseStatusClosed);
+        UIActions.Click(casePage.btn_CaseStatusMarkStatusAsClosed);
+        UIActions.Click(casePage.dropdown_SelectAClosedSStage);
+        UIActions.Click(casePage.dropdown_SelectCancelledStatus);
+        UIActions.Click(casePage.btn_CaseStatusSave);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Status changed successfully.']")));
         Verifications.VerifyElementPresent(CasePage.casePage.success_SubmittedSuccessMessage);
     }
 
@@ -1399,6 +1440,7 @@ public class CallTakerExecute extends Operations {
         casePage.SelectClubType("BCAA Member");
         UIActions.Click(casePage.btn_account_next);
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Save']")));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
 
         //Breadkown location
@@ -1442,7 +1484,7 @@ public class CallTakerExecute extends Operations {
     }
 
 
-    @Test(description = "Story 712, Test 1132 ; ValidateCallTakerSeeCorrectCaseStatus")
+    @Test(description = "Story 712, Test 1132 ; ValidateCallTakerCanProvideAdditionInformationOnDriverToCollect")
     public void ValidateCallTakerCanProvideAdditionInformationOnDriverToCollect() {
         String s = RandomStringUtils.randomAlphabetic(3);
         String driverToCollect = "Sample" + " " + s;
@@ -1457,9 +1499,8 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_DriverToCollectTextArea, driverToCollect);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "edit save");
         System.out.println(casePage.txt_DriverToCollectTextAreaAfterUpdate.getText());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@data-target-selection-name='sfdc:RecordField.Case.RA_DrivertoCollectDetails__c']//lightning-formatted-text")));
         Verifications.VerifyElementTextIsEqualToExpectedText(casePage.txt_DriverToCollectTextAreaAfterUpdate.getText(), driverToCollect);
-
-
     }
 
 
@@ -1479,6 +1520,7 @@ public class CallTakerExecute extends Operations {
         UIActions.ClickAndWait(casePage.btn_SearchVehicle, "search");
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='" + make + "']")));
         WebFlows.RefreshPage();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Vehicle \\ Triage']")));
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
 
 
@@ -1802,6 +1844,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(7000);
         try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-formatted-text[text()='ANNE HAYDEN']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='ANNE HAYDEN']")));
         }
         catch (Exception e){
@@ -1883,6 +1926,7 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_MembershipNumberCAAOrAAA,membershipNumber);
         UIActions.SetDelayAfterAction(3000);
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-formatted-text[text()='LINDSEY HAYDEN']")));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='LINDSEY HAYDEN']")));
         UIActions.Click(casePage.btn_ResultRadioBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(2000);
@@ -1925,6 +1969,7 @@ public class CallTakerExecute extends Operations {
         UIActions.SetDelayAfterAction(3000);
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='No matching member information found.']")));
             Verifications.VerifyElementPresent(casePage.warning_CAAOrAAANoMemberFoundError);
         }
         catch (Exception e){
@@ -1949,6 +1994,7 @@ public class CallTakerExecute extends Operations {
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, accountnotallowed);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.ScrollTopOfPage(1,1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//img[@alt='Cash Call']")));
         Verifications.VerifyElementPresent(casePage.img_CashCallImage);
 
         //Choose BCAA Member with calls allowed >0 and check that the cash call image is not displayed
@@ -1983,6 +2029,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.checkbox_Phone1Primarycheckbox);
         UIActions.Click(casePage.checkbox_Phone2Primarycheckbox);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//li[text()='Only one Phone can be primary.']")));
         Verifications.VerifyElementPresent(casePage.warning_PrimaryPhoneWarning);
     }
 

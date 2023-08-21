@@ -33,7 +33,8 @@ public class UIActions extends Operations {
 
     public static void ClickAndWait(WebElement element, String eleName){
         try {
-        wait.until(ExpectedConditions.elementToBeClickable(element));
+
+            wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
         Thread.sleep(1500);
         }
