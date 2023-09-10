@@ -41,11 +41,9 @@ public class Verifications extends Operations {
 
     public static void VerifyElementPresent(WebElement elem) {
         try {
-            wait.until(ExpectedConditions.visibilityOf(elem));
-
+//            wait.until(ExpectedConditions.visibilityOf(elem));
         Assert.assertTrue(elem.isDisplayed());
         currentTest.pass("Verified element is present" + elem);
-
     }
 
     catch (org.openqa.selenium.NoSuchElementException e)

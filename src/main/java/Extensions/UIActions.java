@@ -238,6 +238,7 @@ public class UIActions extends Operations {
     }
     @Step
     public static void SearchInAppLauncher(String value){
+        SetDelayAfterAction(2000);
 //        wait.until(ExpectedConditions.elementToBeClickable(mainPage.btn_appLauncher));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='slds-icon-waffle']")));
         Click(mainPage.btn_appLauncher);

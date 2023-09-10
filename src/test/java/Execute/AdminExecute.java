@@ -248,6 +248,37 @@ public class AdminExecute extends Operations {
         }
     }
 
+    //This test verifies that 'In Jeopardy Notifications' field is set to True and added to Facility Page Layout
+    @Test(description = "Story 1483, Test 1544+1546 ; ValidateInJeopardyNotificationsIsEnabledOnFacilityLayout")
+    public void ValidateInJeopardyNotificationsIsEnabledOnFacilityLayout() {
+
+        String facilityName = "ALL COAST TOWING";
+        String[] fieldsList = {"Facility ID", "RV Indicator", "Motorcycle Indicator", "Battery Indicator", "Vehicle Type", "Location Name"};
+        UIActions.SearchInAppLauncher("Facilities");
+        WebFlows.RefreshPage();
+        UIActions.SetDelayAfterAction(3000);
+        WebFlows.OpenViewAllListview();
+        UIActions.Click(driver.findElement(By.xpath("//a[@title='" + facilityName + "']")));
+        UIActions.SetDelayAfterAction(1000);
+        try {
+            System.out.println(driver.findElement(By.xpath("//span[text()='In Jeopardy Notifications'][1]//following::input[@name='RA_InJeopardyNotifications__c']")).isSelected());
+            Assert.assertTrue(driver.findElement(By.xpath("//span[text()='In Jeopardy Notifications'][1]//following::input[@name='RA_InJeopardyNotifications__c']")).isSelected());
+            currentTest.pass("Checkbox is checked");
+        }
+
+
+    catch(Exception e){
+        currentTest.fail("Checkbox is Not checked");
+        e.printStackTrace();
+        Assert.assertFalse(true);
+
+
+    }
+
+
+
+        }
+
     //This test validates that the service resource object in the system have the correct fields according to the config book (on setup)
     @Test(description = "Story 1189+1302, Test 1375+1426 ; ValidateServiceResourceObjectHasCorrectFields")
     public void ValidateServiceResourceObjectHasCorrectFields() {
@@ -448,7 +479,7 @@ public class AdminExecute extends Operations {
 
     //In order to execute this test you must run it from an admin profile, since CT doesn't have access to setup
     //This test validates if the service appointment object has the required custom fields in setup
-    @Test(description = "Story 1251+1148+1408+1335+1352, Test 1295+1373+1453+1456+1417 ; ValidateSAHasAccurateFields")
+    @Test(description = "Story 1251+1148+1408+1335+1352+1545, Test 1295+1373+1453+1456+1417 ; ValidateSAHasAccurateFields")
     public void ValidateSAHasAccurateFields() {
         String object = "Service Appointment";
         String section = "Fields & Relationships";
@@ -462,7 +493,7 @@ public class AdminExecute extends Operations {
                 , "Manual Spot Reason", "Cancellation Reason", "Facility Code", "Facility Address", "Facility Phone", "Breakdown Location Cross Street", "Motorcycle Type"
                 , "Motorcycle Engine Type", "RV Class", "RV Engine Location", "Trailer Type", "Trailer Length", "Trailer Plug Type", "Trailer Hitch Type", "Trailer Hitch Size", "Call Creation Date & Time", "Flat Tire Location", "Membership Level",
                 "Internal SLR Geolocation", "Address", "Key Location Other", "Facility Text", "Share Internally", "Service Appointment Priority",
-                "Tow Destination Geolocation"
+                "Tow Destination Geolocation","Facility In Jeopardy Notifications"
         };
 
         WebFlows.OpenSetupWindow();
@@ -542,7 +573,9 @@ public class AdminExecute extends Operations {
         String settingName = "Locations";
         WebFlows.OpenSetupWindow();
         WebFlows.SearchInSetupQuickFind(setupPage);
-        UIActions.Click(driver.findElement(By.xpath("//mark[text()='" + setupPage + "']")));
+        try {
+
+            UIActions.Click(driver.findElement(By.xpath("//mark[text()='" + setupPage + "']")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='User Profiles ~ Salesforce - Unlimited Edition']")));
         driver.switchTo().frame((driver.findElement(By.xpath("//iframe[@title='User Profiles ~ Salesforce - Unlimited Edition']"))));
         UIActions.Click(driver.findElement(By.xpath("//a[text()='" + specificProfileName + "']")));
@@ -558,8 +591,18 @@ public class AdminExecute extends Operations {
         UIActions.Click(driver.findElement(By.xpath("//a[text()='" + settingName + "'][1]")));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']")));
         driver.switchTo().frame((driver.findElement(By.xpath("//iframe[@title='Profile: System Administrator ~ Salesforce - Unlimited Edition']"))));
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//td[text()='ERS Vehicle']//following::input[@checked][1]")));
-        driver.switchTo().defaultContent();
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//td[text()='ERS Vehicle']//following::input[@checked][1]")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//td[text()='ERS Vehicle']//following::input[@checked][1]")));
+            driver.switchTo().defaultContent();
+        }
+        catch (Exception e) {
+            driver.switchTo().defaultContent();
+            e.printStackTrace();
+            currentTest.fail("Couldn't locate an element");
+            Assert.assertFalse(true);
+
+        }
+
 
     }
 
@@ -596,20 +639,29 @@ public class AdminExecute extends Operations {
     }
 
     //This test checks that operating hours were created in the system match the requirement
-    @Test(description = "Story 714, Test 1168 ; ValidateOperatingHoursAreCreatedInTheSystem")
+    @Test(description = "Story 714,836 Test 1168+ 1535; ValidateOperatingHoursAreCreatedInTheSystem")
     public void ValidateOperatingHoursAreCreatedInTheSystem() {
-        int i = 0;
-        int z = 0;
-        String[] workRuleName = {"RA MST Operating Hours", "RA PST Operating Hours"};
-        UIActions.SearchInAppLauncher("Operating Hours");
-        WebFlows.RefreshPage();
-        WebFlows.OpenViewAllListview();
-        UIActions.SetDelayAfterAction(2000);
-        for (String s : workRuleName) {
-            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[@title='" + s + "']")));
-
+//
+//        String operatingHoursTimeZone = RestActions.GetValueFromSpecificRecordCell("OperatingHours", "TimeZone", "Name", "RA MST Operating Hours");
+//
+//
+//        String[] OHName = {"RA MST Operating Hours", "RA PST Operating Hours","BCAA RA AP Operating Hours"};
+//        UIActions.SearchInAppLauncher("Operating Hours");
+//        WebFlows.RefreshPage();
+//        WebFlows.OpenViewAllListview();
+//        UIActions.SetDelayAfterAction(2000);
+//        for (String s : OHName) {
+//            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[@title='" + s + "']")));
+//
+//        }
+        String[] OHName = {"RA+MST+Operating+Hours", "RA+PST+Operating+Hours","BCAA+RA+AP+Operating+Hours"};
+        String [] TimeZone = {"America/Denver","America/Los_Angeles","America/Los_Angeles"};
+        int i=0;
+        for (String s:OHName) {
+            String operatingHoursTimeZone = RestActions.GetValueFromSpecificRecordCell("OperatingHours", "TimeZone", "Name", s);
+            Verifications.VerifyElementTextIsEqualToExpectedText(operatingHoursTimeZone,TimeZone[i]);
+            i++;
         }
-
     }
 
 
@@ -720,56 +772,74 @@ public class AdminExecute extends Operations {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         WebFlows.SwitchIframe(driver.findElements(By.xpath("//iframe[@title='" + object + " Custom Field: " + field + " ~ Salesforce - Unlimited Edition']")));
         for (String s : priorityValues) {
-            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//a[text()='Deactivate']//following::th[text()='" + s + "']")));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//th[text()='" + s + "']")));
+            Verifications.VerifyElementPresent(driver.findElement(By.xpath("//th[text()='" + s + "']")));
         }
     }
 
 //    @Ignore("Skipping as its failing due to configuration of the SA status transition")
     @Test(description = "Story 1347, Test 1415 ; VerifyWOChangesToStatusCancelledIfTheChildSAIsCancelled")
     public void VerifyWOChangesToStatusCancelledIfTheChildSAIsCancelled() throws InterruptedException {
-        String status = "Cancelled";
-        workOrderPage.CreateNewWorkOrder();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Work Order']//following::span[@class='uiOutputText'][1]")));
-        String workOrderNumber = driver.findElement(By.xpath("//div[text()='Work Order']//following::span[@class='uiOutputText'][1]")).getText();
-        WebFlows.CloseOpenedTab();
-        serviceAppointmentPage.CreateServiceAppointmentFromWorkOrder(workOrderNumber, "Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
-        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
-        WebFlows.RefreshPage();
-        UIActions.Click(serviceAppointmentPage.btn_editStatus);
-        UIActions.Click(serviceAppointmentPage.dropdown_status);
-        UIActions.Click(driver.findElement(By.xpath("//a[@title='" + status + "']")));
-        UIActions.Click(serviceAppointmentPage.btn_SASave);
-        UIActions.SetDelayAfterAction(2000);
-        UIActions.Click(driver.findElement(By.xpath("//a[text()='" + workOrderNumber + "']")));
-        WebFlows.RefreshPage();
+        String expectedStatus = "Cancelled";
+//        workOrderPage.CreateNewWorkOrder();
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateWOJson(), JsonPayloads.path_WorkOrder);
+        String woId = createdRecordID;
+        System.out.println(woId);
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateSAJson(), JsonPayloads.path_ServiceAppointment);
+        String saId = createdRecordID;
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonWo(woId), JsonPayloads.path_ServiceAppointment, saId);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonStatus(expectedStatus), JsonPayloads.path_ServiceAppointment, saId);
+        String woStatus = RestActions.GetValueFromSpecificRecordCell("WorkOrder", "Status", "Id", woId);
         try {
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Status']//following::span[text()='" + status + "'][1]")));
-            Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Status']//following::span[text()='" + status + "'][1]")).getText(), status);
-        }
-        catch (AssertionError e){
+            Verifications.VerifyElementTextIsEqualToExpectedText(woStatus, expectedStatus);
+        } catch (AssertionError e) {
             Assert.assertFalse(true);
-        }        catch (org.openqa.selenium.UnhandledAlertException e){
+        } catch (org.openqa.selenium.UnhandledAlertException e) {
             Assert.assertFalse(true);
         }
     }
+
+        //        String actualFacility = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_FacilityText__c", "Id", createdRecordID);
+//        serviceAppointmentPage.CreateServiceAppointmentFromWorkOrder(workOrderNumber, "Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
+//        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
+//        WebFlows.RefreshPage();
+//        UIActions.Click(serviceAppointmentPage.btn_editStatus);
+//        UIActions.Click(serviceAppointmentPage.dropdown_status);
+//        UIActions.Click(driver.findElement(By.xpath("//a[@title='" + status + "']")));
+//        UIActions.Click(serviceAppointmentPage.btn_SASave);
+//        UIActions.SetDelayAfterAction(2000);
+//        UIActions.Click(driver.findElement(By.xpath("//a[text()='" + workOrderNumber + "']")));
+//        WebFlows.RefreshPage();
+//        try {
+//            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[text()='Status']//following::span[text()='" + status + "'][1]")));
+//            Verifications.VerifyElementTextIsEqualToExpectedText(driver.findElement(By.xpath("//span[text()='Status']//following::span[text()='" + status + "'][1]")).getText(), status);
+//        }
+//        catch (AssertionError e){
+//            Assert.assertFalse(true);
+//        }        catch (org.openqa.selenium.UnhandledAlertException e){
+//            Assert.assertFalse(true);
+//        }
+
 
     //This test is checking that after a facility is populated, that the facility text field is populated as well (In the BE) with the same name as the facility
     @Test(description = "Story 1408, Test 1455 ; VerifyFacilityTextIsPopulatedAutomaticallyAfterFacilityIsPopulated")
     public void VerifyFacilityTextIsPopulatedAutomaticallyAfterFacilityIsPopulated() throws InterruptedException {
         String facility = "Guy T Facility";
-        serviceAppointmentPage.CreateServiceAppointment("Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
-        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
-        WebFlows.RefreshPage();
-        UIActions.Click(serviceAppointmentPage.btn_editStatus);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search Facilities...']")));
-        UIActions.UpdateText(driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")), facility);
-        driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")).sendKeys(Keys.ARROW_DOWN);
-        driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")).sendKeys(Keys.ENTER);
-        UIActions.Click(serviceAppointmentPage.btn_SASave);
-        UIActions.SetDelayAfterAction(5000);
-        String serviceAppointmentNumber = driver.findElement(By.xpath("//div[text()='Service Appointment']//following::span[@class='uiOutputText'][1]")).getText();
-        System.out.println(driver.findElement(By.xpath("//div[text()='Service Appointment']//following::span[@class='uiOutputText'][1]")).getText());
-        String actualFacility = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_FacilityText__c", "AppointmentNumber", serviceAppointmentNumber);
+//        serviceAppointmentPage.CreateServiceAppointment("Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
+//        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
+//        WebFlows.RefreshPage();
+//        UIActions.Click(serviceAppointmentPage.btn_editStatus);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Search Facilities...']")));
+//        UIActions.UpdateText(driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")), facility);
+//        driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")).sendKeys(Keys.ARROW_DOWN);
+//        driver.findElement(By.xpath("//input[@placeholder='Search Facilities...']")).sendKeys(Keys.ENTER);
+//        UIActions.Click(serviceAppointmentPage.btn_SASave);
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateSAJson(), JsonPayloads.path_ServiceAppointment);
+        System.out.println(createdRecordID);
+//        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonFacility(), JsonPayloads.path_ServiceAppointment, createdRecordID);
+//        UIActions.SetDelayAfterAction(5000);
+
+        String actualFacility = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_FacilityText__c", "Id", createdRecordID);
         Verifications.VerifyElementTextIsEqualToExpectedText(actualFacility, facility);
     }
 
@@ -779,26 +849,19 @@ public class AdminExecute extends Operations {
     public void VerifyAutomaticPopulationOfSAPriorityAndScheduleOverLowerPriority() throws InterruptedException {
         String expectedServiceAppointmentPriority = "1.0";
         String expectedSLOP = "true";
-        serviceAppointmentPage.CreateServiceAppointment("Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
-        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
-        String serviceAppointmentNumber = driver.findElement(By.xpath("//div[text()='Service Appointment']//following::span[@class='uiOutputText'][1]")).getText();
-        System.out.println(serviceAppointmentNumber);
-
-        String serviceAppointmentId = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "Id", "AppointmentNumber", serviceAppointmentNumber);
-        System.out.println("The id of this record is" + serviceAppointmentId);
-        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonCriticalPriority(), JsonPayloads.path_ServiceAppointment, serviceAppointmentId);
-
-        Double serviceAppointmentPriority = RestActions.GetFloatValueFromSpecificRecordCell("ServiceAppointment", "RA_SAPriority__c", "AppointmentNumber", serviceAppointmentNumber);
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateSAJson(), JsonPayloads.path_ServiceAppointment);
+        System.out.println(createdRecordID);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonCriticalPriority(), JsonPayloads.path_ServiceAppointment, createdRecordID);
+        double serviceAppointmentPriority = RestActions.GetFloatValueFromSpecificRecordCell("ServiceAppointment", "RA_SAPriority__c", "Id", createdRecordID);
         String actualsAP = String.valueOf(serviceAppointmentPriority);
 
-        boolean actualScheduleOverLowerPriority = RestActions.GetBooleanValueFromSpecificRecordCell("ServiceAppointment", "FSL__Schedule_over_lower_priority_appointment__c", "AppointmentNumber", serviceAppointmentNumber);
+        boolean actualScheduleOverLowerPriority = RestActions.GetBooleanValueFromSpecificRecordCell("ServiceAppointment", "FSL__Schedule_over_lower_priority_appointment__c", "Id", createdRecordID);
         String actualSLOP = String.valueOf(actualScheduleOverLowerPriority);
 
         System.out.println(actualsAP);
         System.out.println(actualSLOP);
         Verifications.VerifyElementTextIsEqualToExpectedText(actualsAP, expectedServiceAppointmentPriority);
         Verifications.VerifyElementTextIsEqualToExpectedText(actualSLOP, expectedSLOP);
-
     }
 
     //This test if "RAE Priority" field is populating on the SA, based on the SA 'Case Priority' field
@@ -810,45 +873,46 @@ public class AdminExecute extends Operations {
         String expectedServiceAppointmentPriorityLowPriority = "Low Priority";
         String expectedServiceAppointmentPriorityHomeBasedCall = "Home Based Calls";
         String expectedServiceAppointmentPriorityRegularCalls = "Regular Calls";
-        //Create SA and store its number and fetch its id
-        serviceAppointmentPage.CreateServiceAppointment("Abagael Carlin", "2023", "06", "01", "10:00 a.m.", "2023", "06", "06", "12:00 p.m.");
-        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
-        String serviceAppointmentNumber = driver.findElement(By.xpath("//div[text()='Service Appointment']//following::span[@class='uiOutputText'][1]")).getText();
-        System.out.println(serviceAppointmentNumber);
-        String serviceAppointmentId = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "Id", "AppointmentNumber", serviceAppointmentNumber);
-        System.out.println("The id of this record is" +" "+ serviceAppointmentId);
+        //Create SA and store its Id
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateSAJson(), JsonPayloads.path_ServiceAppointment);
+//        Verifications.VerifyElementPresent(mainPage.alert_successToastMessage);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[text()='Service Appointment']//following::span[@class='uiOutputText'][1]")));
+//        String serviceAppointmentNumber = driver.findElement(By.xpath("//div[text()='Service Appointment']//following::span[@class='uiOutputText'][1]")).getText();
+        System.out.println(createdRecordID);
+//        String serviceAppointmentId = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "Id", "AppointmentNumber", createdRecordID);
+//        System.out.println("The id of this record is" +" "+ serviceAppointmentId);
 
         // Update the SA to Critical Priority and verify if the actual RAE priority match the expected
-        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonCriticalPriority(), JsonPayloads.path_ServiceAppointment, serviceAppointmentId);
-        String actualSAPC = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "AppointmentNumber", serviceAppointmentNumber);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonCriticalPriority(), JsonPayloads.path_ServiceAppointment, createdRecordID);
+        String actualSAPC = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "id", createdRecordID);
         System.out.println("The RAE priority of this SA has changed to: "+" "+actualSAPC );
         Verifications.VerifyElementTextIsEqualToExpectedText(actualSAPC, expectedServiceAppointmentPriorityCritical);
 
 
         // Update the SA to Priority Priority and verify if the actual RAE priority match the expected
-        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonPriorityPriority(), JsonPayloads.path_ServiceAppointment, serviceAppointmentId);
-        String actualSAPP = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "AppointmentNumber", serviceAppointmentNumber);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonPriorityPriority(), JsonPayloads.path_ServiceAppointment, createdRecordID);
+        String actualSAPP = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "Id", createdRecordID);
         System.out.println("The RAE priority of this SA has changed to: "+" "+actualSAPP );
         Verifications.VerifyElementTextIsEqualToExpectedText(actualSAPP, expectedServiceAppointmentPriorityPriority);
 
 
         // Update the SA to Low Priority Priority and verify if the actual RAE priority match the expected
-        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonLowPriority(), JsonPayloads.path_ServiceAppointment, serviceAppointmentId);
-        String actualSAPLP = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "AppointmentNumber", serviceAppointmentNumber);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonLowPriority(), JsonPayloads.path_ServiceAppointment, createdRecordID);
+        String actualSAPLP = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "Id", createdRecordID);
         System.out.println("The RAE priority of this SA has changed to: "+" "+actualSAPLP );
         Verifications.VerifyElementTextIsEqualToExpectedText(actualSAPLP, expectedServiceAppointmentPriorityLowPriority);
 
         // Update the SA to Home Based Calls Priority and verify if the actual RAE priority match the expected
-        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonHomeBasedCall(), JsonPayloads.path_ServiceAppointment, serviceAppointmentId);
-        String actualSAPHBC = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "AppointmentNumber", serviceAppointmentNumber);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonHomeBasedCall(), JsonPayloads.path_ServiceAppointment, createdRecordID);
+        String actualSAPHBC = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "Id", createdRecordID);
         System.out.println("The RAE priority of this SA has changed to: "+" "+actualSAPHBC );
         Verifications.VerifyElementTextIsEqualToExpectedText(actualSAPHBC, expectedServiceAppointmentPriorityHomeBasedCall);
 
 
         // Update the SA to Regular Calls Priority and verify if the actual RAE priority match the expected
-        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonRegularCalls(), JsonPayloads.path_ServiceAppointment, serviceAppointmentId);
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonRegularCalls(), JsonPayloads.path_ServiceAppointment, createdRecordID);
         UIActions.SetDelayAfterAction(1000);
-        String actualSAPRC = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "AppointmentNumber", serviceAppointmentNumber);
+        String actualSAPRC = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "RA_CaseRAEPriority__c", "Id", createdRecordID);
         System.out.println("The RAE priority of this SA has changed to: "+" "+actualSAPRC );
         Verifications.VerifyElementTextIsEqualToExpectedText(actualSAPRC, expectedServiceAppointmentPriorityRegularCalls);
 
@@ -1113,6 +1177,7 @@ public class AdminExecute extends Operations {
     public void ValidatePrioritySettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
         UIActions.SetDelayAfterAction(2000);
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='accessibility title']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingGeneralLogicTab);
@@ -1129,6 +1194,37 @@ public class AdminExecute extends Operations {
             Assert.assertFalse(true);
         }
     }
+
+//    //This test checks that resource schedule optimization settings are configured correctly
+//    @Test(description = "Story 843, Test 1537 ; ValidateResourceScheduleOptimizationSettings")
+//    public void ValidateResourceScheduleOptimizationSettings() {
+//        String[] status = {"Under Tow", "En Route", "On Location", "Complete", "Cannot Complete", "Cancelled"};
+//        UIActions.SearchInAppLauncher("Field Service Settings");
+//        UIActions.SetDelayAfterAction(2000);
+//        driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
+//        UIActions.Click(fieldServiceSettingsPage.btn_OptimizationTab);
+//        UIActions.Click(fieldServiceSettingsPage.btn_OptimizationLogicTab);
+//        UIActions.ScrollBottomOfPage(2, 1000, true);
+//        for (String s : status) {
+//            try {
+//                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[@title='" + s + "']//following-sibling::input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']")));
+//                Verifications.VerifyElementPresent(driver.findElement(By.xpath("//input[@title='" + s + "']//following-sibling::input[@class='ng-pristine ng-untouched ng-valid ng-not-empty']")));
+//            }
+//            catch (AssertionError e){
+//                driver.switchTo().defaultContent();
+//                Assert.assertFalse(true);
+//
+//            }            catch (org.openqa.selenium.NoSuchElementException e){
+//                driver.switchTo().defaultContent();
+//                currentTest.fail("Status are not marked");
+//                e.printStackTrace();
+//                Assert.assertFalse(true);
+//
+//            }
+//        }
+//        driver.switchTo().defaultContent();
+//    }
+
 
 
 
@@ -1157,6 +1253,7 @@ public class AdminExecute extends Operations {
     public void ValidateFixSchedulingSettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
         UIActions.SetDelayAfterAction(2000);
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='accessibility title']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingDynamicGanttTab);
@@ -1180,8 +1277,8 @@ public class AdminExecute extends Operations {
     @Test(description = "Story 842, Test 1523 ; ValidateFillInScheduleSettings")
     public void ValidateFillInScheduleSettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
-        UIActions.SetDelayAfterAction(2000);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='Field Service Settings']")));
+        UIActions.SetDelayAfterAction(5000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='accessibility title']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingDynamicGanttTab);
@@ -1209,6 +1306,7 @@ public class AdminExecute extends Operations {
     public void ValidateRuleViolationConfigurationSettings() {
         UIActions.SearchInAppLauncher("Field Service Settings");
         UIActions.SetDelayAfterAction(2000);
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='accessibility title']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_DispatcherConsoleUI);
         UIActions.Click(fieldServiceSettingsPage.btn_GANTTConfigurationsTab);
@@ -1231,6 +1329,7 @@ public class AdminExecute extends Operations {
         String[] status = {"Under Tow", "En Route", "On Location", "Complete", "Cannot Complete", "Cancelled"};
         UIActions.SearchInAppLauncher("Field Service Settings");
         UIActions.SetDelayAfterAction(2000);
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='accessibility title']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingTab);
         UIActions.Click(fieldServiceSettingsPage.btn_SchedulingGeneralLogicTab);
@@ -1259,6 +1358,7 @@ public class AdminExecute extends Operations {
         int i = 0;
         UIActions.SearchInAppLauncher("Field Service Settings");
         UIActions.SetDelayAfterAction(2000);
+wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@title='accessibility title']")));
         driver.switchTo().frame(fieldServiceSettingsPage.iframe_fieldServiceSettingsIFrame);
         UIActions.Click(fieldServiceSettingsPage.btn_ServiceAppointmentLifeCycleTab);
         UIActions.Click(fieldServiceSettingsPage.btn_SAStatusTab);

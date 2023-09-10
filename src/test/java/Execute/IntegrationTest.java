@@ -1,6 +1,7 @@
 package Execute;
 
 import Extensions.RestActions;
+import Extensions.Verifications;
 import Utilities.JsonPayloads;
 import Utilities.Operations;
 import org.testng.annotations.BeforeClass;
@@ -25,8 +26,9 @@ public class IntegrationTest extends Operations {
     }
     @Test
     public void UpdateSampleSA(){
-        String serviceAppointmentId = RestActions.GetValueFromSpecificRecordCell("ServiceAppointment","Id","AppointmentNumber","SA-0111");
-        System.out.println("this id is "+serviceAppointmentId );
+        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJsonStatus("Cancelled"), JsonPayloads.path_ServiceAppointment, "08pAq000000e46XIAQ");
+        System.out.println( RestActions.GetValueFromSpecificRecordCell("ServiceAppointment", "Status", "Id", "08pAq000000e46XIAQ"));
+;
 
 //        RestActions.UpdateRecordFromJson(JsonPayloads.UpdateServiceAppointmentJson(), JsonPayloads.path_ServiceAppointment, "08pAq000000VNy1IAG");
     }
@@ -35,6 +37,19 @@ public class IntegrationTest extends Operations {
         RestActions.CreateRecordFromJson(JsonPayloads.CreateCaseJson(), JsonPayloads.path_Case);
         System.out.println(createdRecordID);
     }
+
+    @Test
+    public void CreateSamplesa(){
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateSAJson(), JsonPayloads.path_ServiceAppointment);
+        System.out.println(createdRecordID);
+    }
+
+    @Test
+    public void CreateSamplewo(){
+        RestActions.CreateRecordFromJson(JsonPayloads.CreateWOJson(), JsonPayloads.path_WorkOrder);
+        System.out.println(createdRecordID);
+    }
+
     @Test
     public void GetQry(){
 
@@ -43,7 +58,15 @@ public class IntegrationTest extends Operations {
     }
     @Test
     public void GetQry1(){
-        RestActions.GetValueFromSpecificRecordCell("Case", "CaseNumber","Id","500Aq000005gSD7IAM");
+        String[] OHName = {"RA+MST+Operating+Hours", "RA+PST+Operating+Hours","BCAA+RA+AP+Operating+Hours"};
+        String [] TimeZone = {"America/Denver","America/Los_Angeles","America/Los_Angeles"};
+         int i=0;
+        for (String s:OHName) {
+            String operatingHoursTimeZone = RestActions.GetValueFromSpecificRecordCell("OperatingHours", "TimeZone", "Name", s);
+            Verifications.VerifyElementTextIsEqualToExpectedText(operatingHoursTimeZone,TimeZone[i]);
+            i++;
+        }
+
     }
 
     }

@@ -9,6 +9,12 @@ public class FieldServiceSettingsPage extends Operations {
     @FindBy(xpath = "//span[text()='Scheduling']")
     public WebElement btn_SchedulingTab;
 
+    @FindBy(xpath = "//span[text()='Optimization']")
+    public WebElement btn_OptimizationTab;
+
+    @FindBy(xpath = "//div[text()='Logic']")
+    public WebElement btn_OptimizationLogicTab;
+
     @FindBy(xpath = "//span[text()='Dispatcher Console UI']")
     public WebElement btn_DispatcherConsoleUI;
 
@@ -27,6 +33,6 @@ public class FieldServiceSettingsPage extends Operations {
     @FindBy(xpath = "//div[text()='SA Status']")
     public WebElement btn_SAStatusTab;
 
-    @FindBy(xpath = "//iframe[@title='Field Service Settings']")
+    @FindBy(xpath = "//iframe[@title='accessibility title']")
     public WebElement iframe_fieldServiceSettingsIFrame;
 }

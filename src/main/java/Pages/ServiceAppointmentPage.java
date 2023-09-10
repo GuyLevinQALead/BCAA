@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ServiceAppointmentPage extends Operations {
     //Account lookup on service appointment object
-    @FindBy(xpath = "//input[@title='Search Accounts']")
+    @FindBy(xpath = "//input[@placeholder='Search...']")
     public WebElement search_AccountField;
     //Work Order lookup on service appointment object
 
@@ -24,6 +24,10 @@ public class ServiceAppointmentPage extends Operations {
     //Account name txt field on account page when creating it from service appointment object
     @FindBy(xpath = "//span[text()='Account Name']//following::input[@class=' input' and @aria-required]")
     public WebElement txt_newAccountName;
+
+
+    @FindBy(xpath = "//input[@name='lastName']")
+    public WebElement txt_newAccountLastName;
 
     //Account name txt field on account page when creating it from service appointment object
     @FindBy(xpath = "//span[text()='Earliest Start Permitted']//following::input[1]")
@@ -122,20 +126,26 @@ public class ServiceAppointmentPage extends Operations {
         WebFlows.RefreshPage();
         UIActions.Click(workOrderPage.btn_newRecord);
         UIActions.Click(serviceAppointmentPage.search_AccountField);
-        List<WebElement> accountList = driver.findElements(By.xpath("//span[text()='Parent Record']//following::ul[@class='lookup__list  visible']/li/a/div/div"));
-        if (accountList.size() > 0) {
-            actions.sendKeys(Keys.ARROW_DOWN).build().perform();
+//        List<WebElement> accountList = driver.findElements(By.xpath("//span[text()='Parent Record']//following::ul[@class='lookup__list  visible']/li/a/div/div"));
+//        if (accountList.size() > 0) {
+//            actions.sendKeys(Keys.ARROW_DOWN).build().perform();
+            UIActions.Click(serviceAppointmentPage.search_AccountField);
+            UIActions.UpdateText(serviceAppointmentPage.search_AccountField,AccountName);
+            Thread.sleep(1000);
+            actions.sendKeys(Keys.PAGE_DOWN).build().perform();
+            actions.sendKeys(Keys.PAGE_DOWN).build().perform();
             actions.sendKeys(Keys.ENTER).build().perform();
-        } else {
-
-            UIActions.Click(serviceAppointmentPage.btn_createAccount);
-            for (String openTabs : driver.getWindowHandles()) {
-                driver.switchTo().window(openTabs);
-            }
-            UIActions.UpdateText(serviceAppointmentPage.txt_newAccountName, AccountName);
-            UIActions.MoveAndDoubleClickOnElement(workOrderPage.btn_woOrSaSaveButton);
-            driver.switchTo().defaultContent();
-        }
+//        } else {
+//
+//            UIActions.Click(serviceAppointmentPage.btn_createAccount);
+//            for (String openTabs : driver.getWindowHandles()) {
+//                driver.switchTo().window(openTabs);
+//            }
+//            UIActions.Click(driver.findElement(By.xpath("//span[text()='Next']")));
+//            UIActions.UpdateText(serviceAppointmentPage.txt_newAccountLastName, AccountName);
+//            UIActions.MoveAndDoubleClickOnElement(driver.findElement(By.xpath("//button[@name='SaveEdit']")));
+//            driver.switchTo().defaultContent();
+//        }
         WebFlows.chooseDateFromOotbDatePicker(ServiceAppointmentPage.serviceAppointmentPage.dropdown_startDate, fromDay ,fromMonth,fromYear);
         WebFlows.ChooseTimeFromDatePicker("//span[text()='Earliest Start Permitted']//following::input[1]", fromTime);
         WebFlows.chooseDateFromOotbDatePicker(ServiceAppointmentPage.serviceAppointmentPage.dropdown_endDate, toDay,toMonth,toYear);

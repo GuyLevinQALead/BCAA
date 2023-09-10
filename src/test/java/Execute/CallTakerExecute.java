@@ -42,16 +42,19 @@ public class CallTakerExecute extends Operations {
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
-//        casePage.SaveNewCase();
-//        UIActions.ClickAndWait(casePage.btn_EditStatus, "status");
-        UIActions.Click(casePage.checkbox_JOA);
-        UIActions.Click(casePage.checkbox_IsCourtesyCall);
-//        casePage.SelectCaseOrigin();
         casePage.SaveNewCase();
         casePage.NavigateCaseInnerTab("Service");
+        UIActions.SetDelayAfterAction(10);
         UIActions.ScrollBottomOfPage(1, 1000, true);
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='JOA']/parent::label/parent::span/parent::div/parent::lightning-input[@checked]")));
-        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='Is Courtesy Call']/parent::label/parent::span/parent::div/parent::lightning-input[@checked]")));
+//        UIActions.ClickAndWait(casePage.btn_EditStatus, "status");
+        UIActions.Click(casePage.btn_EditJOA);
+        UIActions.Click(casePage.checkbox_JOA);
+        UIActions.Click(casePage.checkbox_IsCourtesyCall);
+        casePage.SaveNewCase();
+        casePage.NavigateCaseInnerTab("Service");
+//        UIActions.ScrollBottomOfPage(1, 1000, true);
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='JOA']//following::lightning-input[@checked][1]")));
+        Verifications.VerifyElementPresent(driver.findElement(By.xpath("//span[text()='Is Courtesy Call']//following::lightning-input[@checked][1]")));
     }
 
 
@@ -185,6 +188,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_callTakerComments);
         UIActions.UpdateText(casePage.txt_callTakerComments, callTakerComment);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "edit save");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-formatted-text[text()='" + callTakerComment + "']")));
         Verifications.VerifyElementIsPresentUsingXpath("//lightning-formatted-text[text()='" + callTakerComment + "']");
     }
 
@@ -250,8 +254,14 @@ public class CallTakerExecute extends Operations {
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
+        casePage.SaveNewCase();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Service']")));
 //        UIActions.ScrollBottomOfPage(3,1000,true);
+        casePage.NavigateCaseInnerTab("Service");
+        UIActions.ScrollBottomOfPage(1, 1, true);
         UIActions.Click(casePage.dropdown_CallType);
+        UIActions.Click(driver.findElement(By.xpath("//label[text()='Call Type']//following::button[@data-value='--None--'][1]")));
+
 //        UIActions.ClickAndWait(casePage.dropdown_CallType, "");
         System.out.println(WebFlows.ReadCSVFile(ReadCsv.OBJECTS.CALL_TYPE));
         for (Object s : WebFlows.ReadCSVFile(ReadCsv.OBJECTS.CALL_TYPE)) {
@@ -277,7 +287,9 @@ public class CallTakerExecute extends Operations {
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
+        casePage.SaveNewCase();
         UIActions.Click(casePage.dropdown_Origin);
+        UIActions.Click(casePage.dropdown_OriginCallCentreValue);
         List<WebElement> caseOriginCSV = WebFlows.ReadCSVFile(ReadCsv.OBJECTS.CASE_ORIGIN);
 //        System.out.println(caseOriginCSV);
         for (Object s : WebFlows.ReadCSVFile(ReadCsv.OBJECTS.CASE_ORIGIN)) {
@@ -316,6 +328,7 @@ public class CallTakerExecute extends Operations {
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
         casePage.SaveNewCase();
+        UIActions.SetDelayAfterAction(1500);
         UIActions.Click(casePage.btn_account_next);
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
@@ -469,6 +482,7 @@ public class CallTakerExecute extends Operations {
     //Checking that once you choose an account for a case, its mobile phone and address are populated on the case
     public void  ValidateAccountAddedAndFieldsPopulatedForCase() {
         String account = "Abagael Carlin";
+        UIActions.SetDelayAfterAction(3000);
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
@@ -645,7 +659,7 @@ public class CallTakerExecute extends Operations {
 
     @Test(description = "Story 527,966 Test 982, 983,1290+981 ; ValidateKeyLocationCallTypes")
     public void ValidateKeyLocationCallTypes() {
-        String[] types = {"KD Drvr Key & Release", "KM Mbr Key & Release", "KO Oper Key & Release", "2T 2nd Tow"};
+        String[] types = {"--None--","KD Drvr Key & Release", "KM Mbr Key & Release", "KO Oper Key & Release", "2T 2nd Tow"};
         UIActions.SearchInAppLauncher("Cases");
         casePage.OpenNewRoadAssistBCAACaseWindow();
         UIActions.Click(casePage.btn_Next);
@@ -653,20 +667,25 @@ public class CallTakerExecute extends Operations {
         casePage.NavigateCaseInnerTab("Service");
         UIActions.SetDelayAfterAction(1500);
         UIActions.ScrollBottomOfPage(1, 1000, true);
-        UIActions.Click(casePage.btn_callTypeEdit);
+//        UIActions.Click(casePage.dropdown_CallType);
 
         //Ticket 982+983+1290 (Key location fields appear)
         for (int i = 0; i < 3; i++) {
-            casePage.SelectCallTypeValue(types[i]);
+            UIActions.MoveToElementAndClick(casePage.dropdown_CallType);
+            UIActions.Click(driver.findElement(By.xpath("//label[text()='Call Type']//following::button[@data-value='"+types[i]+"'][1]")));
+            casePage.SelectCallTypeValue(types[i+1]);
             UIActions.SetDelayAfterAction(1500);
             Verifications.VerifyElementPresent(casePage.dropdown_KeyLocation);
+            UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
+            UIActions.SetDelayAfterAction(1500);
+
         }
-        UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         UIActions.SetDelayAfterAction(3000);
         UIActions.Click(casePage.info_KeyLocationInfo);
         Verifications.VerifyElementIsPresentUsingXpath("//div[text()='If you select ‘Other’ in Key Location, please populate Key Location - Other.']");
         UIActions.Click(casePage.btn_callTypeEdit);
-        for (int i = 3; i < 4; i++) {
+        UIActions.Click(driver.findElement(By.xpath("//label[text()='Call Type']//following::button[@data-value='KO Oper Key & Release'][1]")));
+        for (int i = 4; i < 5; i++) {
             casePage.SelectCallTypeValue(types[i]);
             UIActions.SetDelayAfterAction(1500);
             Verifications.VerifyElementIsNotPresentUsingAXpath("//label[text()='Key Location']/parent::lightning-combobox//button[@data-value='--None--']");
@@ -767,7 +786,7 @@ public class CallTakerExecute extends Operations {
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
-        UIActions.Click(casePage.btn_problemTypeEdit);
+//        UIActions.Click(casePage.btn_problemTypeEdit);
         casePage.SelectProblemType(casePage.dropdown_problemType, problemType);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Save']")));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save after edit");
@@ -816,7 +835,7 @@ public class CallTakerExecute extends Operations {
 
 
     }
-
+    @Ignore("Skipped because requirement needs manual configuration before running the test ")
     @Test(description = "Story 1135,966 Test 930+1288 ValidateResultsOfUniqueVehiclesAreDisplayedI")
     public void ValidateResultsOfUniqueVehiclesAreDisplayedI() {
         String account = readData.GetData("Account_Kevin");
@@ -883,7 +902,7 @@ public class CallTakerExecute extends Operations {
         casePage.SelectAccountByName(casePage.search_AccountTab_AccountTemp, account);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
         casePage.NavigateCaseInnerTab("Vehicle \\ Triage");
-        UIActions.Click(casePage.btn_problemTypeEdit);
+//        UIActions.Click(casePage.btn_problemTypeEdit);
         casePage.SelectProblemType(casePage.dropdown_problemType, problemType);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Save']")));
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save after edit");
@@ -1156,6 +1175,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.txt_NonBCAA_HomeAddress);
         UIActions.UpdateText(casePage.txt_NonBCAA_HomeAddress,address);
         casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ARROW_DOWN);
+        UIActions.SetDelayAfterAction(500);
         casePage.txt_NonBCAA_HomeAddress.sendKeys(Keys.ENTER);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save");
         UIActions.SetDelayAfterAction(3000);
@@ -1163,8 +1183,15 @@ public class CallTakerExecute extends Operations {
         UIActions.SetDelayAfterAction(2000);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Breakdown Location']")));
         casePage.NavigateCaseInnerTab("Breakdown Location");
-        WebElement s = driver.findElement(By.xpath("//span[text()='Address Geolocation']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a"));
-        Verifications.VerifyTextIsNotNullInElement(s);
+        try {
+            WebElement s = driver.findElement(By.xpath("//span[text()='Address Geolocation']//following::lightning-formatted-location"));
+            Verifications.VerifyTextIsNotNullInElement(s);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            currentTest.fail("Couldn't find a territory");
+            Assert.assertFalse(true);
+        }
     }
 
     @Test(description = "Story 419, Test 1083 ValidateAddressPopulatedAutomaticallyWhenLatitudeAndLongitudeAreFilled")
@@ -1183,6 +1210,7 @@ public class CallTakerExecute extends Operations {
         UIActions.SetDelayAfterAction(3000);
         WebFlows.RefreshPage();
         UIActions.SetDelayAfterAction(5000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='Breakdown Location']")));
         casePage.NavigateCaseInnerTab("Breakdown Location");
 //        try {
             List<WebElement> e = driver.findElements(By.xpath("//span[text()='Breakdown Location Address']/parent::div/parent::div/div/span/slot/lightning-formatted-address/a"));
@@ -1427,8 +1455,9 @@ public class CallTakerExecute extends Operations {
 
         //Pacesetter Code
         casePage.NavigateCaseInnerTab("Service");
-        UIActions.SetDelayAfterAction(1000);
+        UIActions.SetDelayAfterAction(3000);
         UIActions.ScrollBottomOfPage(1, 1000, true);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@title='Edit Pacesetter Code']")));
         UIActions.Click(casePage.btn_PacesetterCodePicklistEditButton);
         UIActions.Click(casePage.dropdown_PacesetterCodePicklistOnUpdate);
         UIActions.Click(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='L301 - No Crank - Jump Start']")));
@@ -1551,29 +1580,47 @@ public class CallTakerExecute extends Operations {
 
         //Manually populate all vehicle fields and save
         UIActions.Click(casePage.dropdown_VehicleType);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[0] + "']")));
         UIActions.Click(casePage.dropdown_ProblemType);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[1] + "']")));
         UIActions.Click(casePage.dropdown_PacesetterCodePicklist);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='" + fieldValues[2] + "']")));
+        UIActions.SetDelayAfterAction(500);
         UIActions.UpdateText(casePage.txt_VehicleDescriptionTextBox, fieldValues[3]);
+        UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
+
+        UIActions.Click(casePage.btn_EditVehicleType);
+        UIActions.SetDelayAfterAction(1500);
+//        actions.doubleClick(casePage.dropdown_YearVehicleInformationSection);
         UIActions.Click(casePage.dropdown_YearVehicleInformationSection);
+        UIActions.SetDelayAfterAction(1500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[4] + "']")));
+        UIActions.SetDelayAfterAction(500);
         UIActions.UpdateText(casePage.txt_VehicleMakeTextBox, fieldValues[5]);
+        UIActions.SetDelayAfterAction(500);
         UIActions.UpdateText(casePage.txt_VehicleModelTextBox, fieldValues[6]);
         UIActions.Click(casePage.dropdown_Driveline);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[7] + "']")));
         UIActions.Click(casePage.dropdown_FuelType);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[8] + "']")));
+        UIActions.SetDelayAfterAction(500);
         UIActions.UpdateText(casePage.txt_LicensePlatTextBox, fieldValues[9]);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(casePage.dropdown_Color);
         UIActions.Click(casePage.dropdown_Color);
         UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[10] + "']")));
         UIActions.Click(casePage.dropdown_Province);
+        UIActions.SetDelayAfterAction(500);
         UIActions.Click(driver.findElement(By.xpath("//span[text()='" + fieldValues[11] + "']")));
         UIActions.Click(casePage.multipicklist_FlatTireFront);
         UIActions.Click(casePage.multipicklist_MoveToChosen);
+        UIActions.SetDelayAfterAction(500);
         UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
 
 
@@ -1865,6 +1912,7 @@ public class CallTakerExecute extends Operations {
         UIActions.UpdateText(casePage.txt_MembershipNumberCAAOrAAA,membershipNumber);
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(7000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-formatted-text[text()='ANNE HAYDEN']")));
         Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='ANNE HAYDEN']")));
         UIActions.Click(casePage.btn_PreviousBtnCAAOrAAA);
 
@@ -1881,6 +1929,7 @@ public class CallTakerExecute extends Operations {
         UIActions.Click(casePage.btn_SearchBtnCAAOrAAA);
         UIActions.SetDelayAfterAction(3000);
         try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//lightning-base-formatted-text[text()='JONATHAN JAMES']")));
             Verifications.VerifyElementPresent(driver.findElement(By.xpath("//lightning-base-formatted-text[text()='JONATHAN JAMES']")));
         }
         catch (Exception e){

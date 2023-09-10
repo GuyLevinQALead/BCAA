@@ -123,8 +123,11 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//button[@title='Edit Status']")
     public WebElement btn_EditStatus;
 
-    @FindBy(xpath = "//label[text()='Case Origin']/parent::lightning-combobox//button[@data-value='Call Centre']")
+    @FindBy(xpath = "//span[text()='Edit Case Origin']")
     public WebElement dropdown_Origin;
+
+    @FindBy(xpath = "//button[@aria-label='Case Origin, Call Centre']")
+    public WebElement dropdown_OriginCallCentreValue;
     @FindBy(xpath = "//button[@title='Edit Location Code']")
     public WebElement btn_EditLocationCode;
 
@@ -137,13 +140,13 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//button[@data-value='Open']")
     public WebElement dropdown_StatusEdit;
 
-    @FindBy(xpath = "//label[text()='Call Type']/following-sibling::div/lightning-base-combobox/div/div/button")
+    @FindBy(xpath = "//span[text()='Edit Call Type']")
     public WebElement dropdown_CallType;
 
     @FindBy(xpath = "//label[text()='Key Location']/parent::lightning-combobox//button[@data-value='--None--']")
     public WebElement dropdown_KeyLocation;
 
-    @FindBy(xpath = "//label[text()='Location Code']/parent::lightning-combobox//button[@data-value='--None--']")
+    @FindBy(xpath = "//label[text()='Location Code']//following::button[@aria-label='Location Code, --None--']")
     public WebElement dropdown_LocationCode;
 
     @FindBy(xpath = "//span[text()='Key Location']//following::lightning-button-icon[1]")
@@ -155,11 +158,14 @@ public class CasePage extends Operations {
     @FindBy(xpath = "//span[text()='Is Affiliated Club']/parent::label/parent::lightning-input/div/span/input")
     public WebElement checkbox_IsAffiliatedClub;
 
-    @FindBy(xpath = "//span[text()='Is Courtesy Call']/parent::label/parent::lightning-input/div/span/input")
+    @FindBy(xpath = "//input[@name='RA_IsCourtesyCall__c']")
     public WebElement checkbox_IsCourtesyCall;
 
-    @FindBy(xpath = "//span[text()='JOA']/parent::label/parent::lightning-input/div/span/input")
+    @FindBy(xpath = "//input[@name='RA_JOA__c']")
     public WebElement checkbox_JOA;
+
+    @FindBy(xpath = "//button[@title='Edit JOA']")
+    public WebElement btn_EditJOA;
 
     @FindBy(xpath = "//label[text()='Internal Comments']//following-sibling::div/textarea")
     public WebElement txt_InternalComment;
@@ -675,7 +681,7 @@ public class CasePage extends Operations {
 
 
 
-    @FindBy(xpath = "//label[text()='Problem Type']/parent::lightning-combobox/descendant::button")
+    @FindBy(xpath = "//span[text()='Edit Problem Type']")
     public WebElement dropdown_problemType;
 
     @FindBy(xpath = "//select[@name = 'screeninput_ClubType']")
@@ -745,6 +751,7 @@ public class CasePage extends Operations {
 
     public void SelectProblemType(WebElement dropdown, String problemValue){
         UIActions.ClickAndWait(dropdown, "problem dropdown");
+        UIActions.ClickAndWait(driver.findElement(By.xpath("//label[text()='Problem Type']//following::span[text()='--None--'][1]")), "problem dropdown");
         UIActions.ClickAndWait(driver.findElement(By.xpath("//span[@title='"+problemValue+"']")), problemValue);
     }
 
@@ -770,18 +777,25 @@ public class CasePage extends Operations {
         while (repeat <= 1){
             try{
 //                UIActions.Click(dropdown_CallType);
-                UIActions.MoveToElementAndClick(dropdown_CallType);
                 UIActions.ClickAndWait(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='"+callTypeValue+"']")), callTypeValue);
+
+
                 break;
             }catch (StaleElementReferenceException e){
 //                UIActions.Click(dropdown_CallType);
-                UIActions.MoveToElementAndClick(dropdown_CallType);
+
                 UIActions.ClickAndWait(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='"+callTypeValue+"']")), callTypeValue);
-            }
-            catch (ElementClickInterceptedException e){
-                JavascriptExecutor executor = (JavascriptExecutor)driver;
-                executor.executeScript("arguments[0].click();", dropdown_CallType);
-                UIActions.ClickAndWait(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='"+callTypeValue+"']")), callTypeValue);
+
+
+
+//            }
+//            catch (ElementClickInterceptedException e){
+//                JavascriptExecutor executor = (JavascriptExecutor)driver;
+//                executor.executeScript("arguments[0].click();", dropdown_CallType);
+//                executor.executeScript("arguments[0].click();",driver.findElement(By.xpath("//label[text()='Call Type']//following::button[@data-value='--None--'][1]")));
+//                UIActions.ClickAndWait(driver.findElement(By.xpath("//lightning-base-combobox-item[@data-value='"+callTypeValue+"']")), callTypeValue);
+//                UIActions.ClickAndWait(casePage.btn_SaveFieldEdit, "save edit");
+
             }
             repeat++;
         }
@@ -853,14 +867,13 @@ public class CasePage extends Operations {
         dropdown.sendKeys(Keys.ENTER);
     }
 
-    public void NavigateCaseInnerTab(String tabName){
+    public void NavigateCaseInnerTab(String tabName) {
         try {
             UIActions.SetDelayAfterAction(1000);
-            List<WebElement> tab = driver.findElements(By.xpath("//a[@data-label='"+tabName+"']"));
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='"+tabName+"']")));
-//            wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//a[@data-label='"+tabName+"']"))));
-            if (tab.size() > 0){
-                UIActions.Click(tab.get(tab.size()-1));
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-label='" + tabName + "']")));
+            List<WebElement> tab = driver.findElements(By.xpath("//a[@data-label='" + tabName + "']"));
+            if (tab.size() > 0) {
+                UIActions.Click(tab.get(tab.size() - 1));
             } else {
                 wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@title='More Tabs']")));
                 List<WebElement> moreTab = driver.findElements(By.xpath("//button[@title='More Tabs']"));
@@ -871,12 +884,12 @@ public class CasePage extends Operations {
                 }
             }
             UIActions.SetDelayAfterAction(500);
-        } catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
             currentTest.warning("Could not resolve Inner case navigate");
             Assert.fail();
-            System.out.println("Fail:" + e);
-        }
 
+        }
     }
 
     public WebElement GetRelatedTabComment(String commentText){
